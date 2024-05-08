@@ -9,7 +9,8 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:id="@+id/main"
-    tools:context=".Dish.CreateDish">
+    tools:context=".Dish.CreateDish"
+    android:background="#D5D6D6">
 
     <ImageButton
         android:layout_width="201dp"
@@ -22,6 +23,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.173" />
 
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtDishName"
         android:layout_width="350dp"
@@ -32,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.480" >
+        app:layout_constraintVertical_bias="0.480">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -58,13 +61,52 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
+    <ImageButton
+        android:id="@+id/toggleButtonNut"
+        android:layout_width="160px"
+        android:layout_height="160px"
+        android:src="@drawable/crustacean_icon"
+        android:layout_marginTop="52dp"
         android:textOff="Deseleccionado"
         android:textOn="Seleccionado"
-        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="105dp" />
+
+    <ImageButton
+        android:id="@+id/toggleButtonGluten"
+        android:layout_width="160px"
+        android:layout_height="160px"
+        android:src="@drawable/gluten_icon"
+        android:layout_marginTop="52dp"
+        android:textOff="Deseleccionado"
+        android:textOn="Seleccionado"
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"
+        tools:layout_editor_absoluteX="36dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/toggleButtonEgg"
+        android:layout_width="160px"
+        android:layout_height="160px"
+        android:src="@drawable/egg_icon"
+        android:layout_marginTop="52dp"
+        android:textOff="Deseleccionado"
+        android:textOn="Seleccionado"
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="281dp" />
+
+    <ImageButton
+        android:id="@+id/toggleButtonSesame"
+        android:layout_width="160px"
+        android:layout_height="160px"
+        android:src="sesa"
+        android:layout_marginTop="52dp"
+        android:textOff="Deseleccionado"
+        android:textOn="Seleccionado"
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="183dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
