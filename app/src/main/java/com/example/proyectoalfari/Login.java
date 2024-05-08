@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
+import com.example.proyectoalfari.Dish.CreateDish;
 
 public class Login extends AppCompatActivity {
 
@@ -18,6 +19,7 @@ public class Login extends AppCompatActivity {
     private Button btnLogin;
 
     private Intent intentRegister;
+    private Intent intentRCreate;
 
 
 
@@ -38,6 +40,14 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 intentRegister = new Intent(Login.this,Register.class);
                 startActivity(intentRegister);
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentRCreate = new Intent(Login.this, CreateDish.class);
+                startActivity(intentRCreate);
             }
         });
 
