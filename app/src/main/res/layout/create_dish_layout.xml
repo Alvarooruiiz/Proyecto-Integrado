@@ -13,15 +13,13 @@
     android:background="#D5D6D6">
 
     <ImageButton
+        android:id="@+id/ibImage"
         android:layout_width="201dp"
         android:layout_height="182dp"
         android:src="@drawable/image_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
@@ -30,105 +28,79 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:hint="Dish name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintTop_toBottomOf="@+id/ibImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.480">
-
+        app:layout_constraintEnd_toEndOf="parent">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtDishDesc"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:hint="Quite desc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintTop_toBottomOf="@+id/txtDishName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.600" >
-
+        app:layout_constraintEnd_toEndOf="parent" >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonCrustacean"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="52dp"
         android:src="@drawable/crustacean_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.341"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintEnd_toEndOf="@+id/imageButtonSesame"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="@+id/imageButtonGluten"
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonGluten"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="52dp"
         android:src="@drawable/gluten_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.105"
+        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonEgg"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="52dp"
         android:src="@drawable/egg_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintVertical_bias="0.754"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonSesame"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="52dp"
         android:src="@drawable/sesame_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.601"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDishDesc"
+        app:layout_constraintStart_toStartOf="@+id/imageButtonCrustacean"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonNut"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="152dp"
         android:src="@drawable/nuts_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.105"
@@ -136,14 +108,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.903" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonDairy"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="152dp"
         android:src="@drawable/dairy_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.341"
@@ -151,14 +121,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.899" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonFish"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="152dp"
         android:src="@drawable/fish_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.845"
@@ -166,14 +134,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.901" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonSoy"
         android:layout_width="170px"
         android:layout_height="170px"
         android:layout_marginTop="152dp"
         android:src="@drawable/soy_icon"
-        android:textOff="Deseleccionado"
-        android:textOn="Seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.601"
