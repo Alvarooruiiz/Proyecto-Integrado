@@ -4,14 +4,17 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 
-public class Food {
+public class Dish {
     private String id;
     private String name;
     private String desc;
     private Uri image;
     private ArrayList<String> allergens;
 
-    public Food(String id, String name, String desc, Uri image, ArrayList<String> allergens) {
+    public Dish() {
+    }
+
+    public Dish(String id, String name, String desc, Uri image, ArrayList<String> allergens) {
         this.id = id;
         this.name = name;
         this.desc = desc;

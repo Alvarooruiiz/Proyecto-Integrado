@@ -2,13 +2,18 @@ package com.example.proyectoalfari.Dish;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.R;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 
 public class CreateDish extends AppCompatActivity {
     private ImageView ivGluten;
@@ -19,6 +24,14 @@ public class CreateDish extends AppCompatActivity {
     private ImageView ivLeche;
     private ImageView ivSoja;
     private ImageView ivPescado;
+    private ImageView ivMustard;
+
+    private TextInputLayout txtDishName;
+    private TextInputLayout txtDishDesc;
+
+    private Button btnCreateDish;
+
+    private ArrayList<String> allergens;
 
 
     @Override
@@ -33,8 +46,12 @@ public class CreateDish extends AppCompatActivity {
         ivNueces = findViewById(R.id.imageButtonNut);
         ivLeche = findViewById(R.id.imageButtonDairy);
         ivSoja = findViewById(R.id.imageButtonSoy);
-        ivPescado = findViewById(R.id.imageButtonFish);
+        ivMustard = findViewById(R.id.imageButtonMustard);
 
+        txtDishName = findViewById(R.id.txtDishName);
+        txtDishDesc = findViewById(R.id.txtDishDesc);
+
+        btnCreateDish = findViewById(R.id.btnCrear);
         ivSesamo.setOnClickListener(new View.OnClickListener() {
             boolean isPressed = true;
 
@@ -43,11 +60,14 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivSesamo.setImageResource(R.drawable.sesame_icon);
+                    allergens.add("sesame");
                 } else {
                     ivSesamo.setImageResource(R.drawable.sesame_oscuro_icon);
+                    allergens.remove("sesame");
                 }
             }
         });
+        ivPescado = findViewById(R.id.imageButtonFish);
         ivGluten.setOnClickListener(new View.OnClickListener() {
             boolean isPressed = true;
 
@@ -137,6 +157,33 @@ public class CreateDish extends AppCompatActivity {
                 } else {
                     ivPescado.setImageResource(R.drawable.fish_oscuro_icon);
                 }
+            }
+        });
+        ivMustard.setOnClickListener(new View.OnClickListener() {
+            boolean isPressed = true;
+
+            @Override
+            public void onClick(View v) {
+                isPressed = !isPressed;
+                if (isPressed) {
+                    ivMustard.setImageResource(R.drawable.mustard_icon);
+                } else {
+                    ivMustard.setImageResource(R.drawable.mustard_oscuro_icon);
+                }
+            }
+        });
+
+        btnCreateDish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dishName = txtDishName.getEditText().toString();
+                String dishDesc = txtDishDesc.getEditText().toString();
+                Dish d =new Dish();
+                d.setId("1");
+                d.setName(dishName);
+                d.setDesc(dishDesc);
+                d.setImage();
+                d.setAllergens();
             }
         });
     }
