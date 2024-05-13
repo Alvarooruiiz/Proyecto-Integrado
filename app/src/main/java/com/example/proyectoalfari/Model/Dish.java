@@ -14,11 +14,10 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(String id, String name, String desc, Uri image, ArrayList<String> allergens) {
+    public Dish(String id, String name, String desc,  ArrayList<String> allergens) {
         this.id = id;
         this.name = name;
         this.desc = desc;
-        this.image = image;
         this.allergens = allergens;
     }
 

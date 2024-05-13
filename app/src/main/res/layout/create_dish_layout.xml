@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
-    tools:context=".Dish.CreateDish"
-    android:background="#D5D6D6">
+    tools:context=".Dish.CreateDish">
 
-    <ImageButton
-        android:id="@+id/ibImage"
+    <ImageView
+        android:id="@+id/ivImage"
         android:layout_width="201dp"
         android:layout_height="182dp"
         android:src="@drawable/image_add"
@@ -24,7 +23,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:hint="Dish name"
-        app:layout_constraintTop_toBottomOf="@+id/ibImage"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <com.google.android.material.textfield.TextInputEditText
