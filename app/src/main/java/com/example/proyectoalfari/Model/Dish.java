@@ -8,16 +8,19 @@ public class Dish {
     private String id;
     private String name;
     private String desc;
-    private Uri image;
-    private ArrayList<String> allergens;
+    private String imageUrl;
+    private String allergens;
+    private Double price;
 
     public Dish() {
     }
 
-    public Dish(String id, String name, String desc,  ArrayList<String> allergens) {
+    public Dish(String id, String name, String desc, String imageUrl, Double price, String allergens) {
         this.id = id;
         this.name = name;
         this.desc = desc;
+        this.imageUrl = imageUrl;
+        this.price = price;
         this.allergens = allergens;
     }
 
@@ -45,19 +48,27 @@ public class Dish {
         this.desc = desc;
     }
 
-    public Uri getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(Uri image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public ArrayList<String> getAllergens() {
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getAllergens() {
         return allergens;
     }
 
-    public void setAllergens(ArrayList<String> allergens) {
+    public void setAllergens(String allergens) {
         this.allergens = allergens;
     }
 }

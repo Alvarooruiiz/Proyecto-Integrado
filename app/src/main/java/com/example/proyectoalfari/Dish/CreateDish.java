@@ -1,8 +1,11 @@
 package com.example.proyectoalfari.Dish;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -11,10 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.R;
@@ -26,7 +31,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.FileDownloadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class CreateDish extends AppCompatActivity {
     private ImageView ivGluten;
@@ -43,6 +51,7 @@ public class CreateDish extends AppCompatActivity {
 
     private TextInputLayout txtDishName;
     private TextInputLayout txtDishDesc;
+    private TextInputLayout txtDishPrice;
 
     private Button btnCreateDish;
 
@@ -54,6 +63,9 @@ public class CreateDish extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_IMAGE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
+    
+    private Uri imageUri;
+    private String imageUrl;
 
 
     @Override
@@ -77,6 +89,7 @@ public class CreateDish extends AppCompatActivity {
 
         txtDishName = findViewById(R.id.txtDishName);
         txtDishDesc = findViewById(R.id.txtDishDesc);
+        txtDishPrice = findViewById(R.id.txtDishPrice);
 
         btnCreateDish = findViewById(R.id.btnCrear);
 
@@ -111,10 +124,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivGluten.setImageResource(R.drawable.gluten_icon);
+                    ivGluten.setImageResource(R.drawable.gluten_oscuro_icon);
                     allergens.add("gluten");
                 } else {
-                    ivGluten.setImageResource(R.drawable.gluten_oscuro_icon);
+                    ivGluten.setImageResource(R.drawable.gluten_icon);
                     allergens.remove("gluten");
                 }
             }
@@ -126,10 +139,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivCrustaceo.setImageResource(R.drawable.crustacean_icon);
+                    ivCrustaceo.setImageResource(R.drawable.crustaceo_oscuro_icon);
                     allergens.add("crustacean");
                 } else {
-                    ivCrustaceo.setImageResource(R.drawable.crustaceo_oscuro_icon);
+                    ivCrustaceo.setImageResource(R.drawable.crustacean_icon);
                     allergens.remove("crustacean");
                 }
             }
@@ -141,10 +154,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivHuevo.setImageResource(R.drawable.egg_icon);
+                    ivHuevo.setImageResource(R.drawable.egg_oscuro_icon);
                     allergens.add("egg");
                 } else {
-                    ivHuevo.setImageResource(R.drawable.egg_oscuro_icon);
+                    ivHuevo.setImageResource(R.drawable.egg_icon);
                     allergens.remove("egg");
                 }
             }
@@ -156,10 +169,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivNueces.setImageResource(R.drawable.nuts_icon);
+                    ivNueces.setImageResource(R.drawable.nuts_oscuro_icon);
                     allergens.add("nuts");
                 } else {
-                    ivNueces.setImageResource(R.drawable.nuts_oscuro_icon);
+                    ivNueces.setImageResource(R.drawable.nuts_icon);
                     allergens.remove("nuts");
                 }
             }
@@ -171,10 +184,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivLeche.setImageResource(R.drawable.dairy_icon);
+                    ivLeche.setImageResource(R.drawable.dairy_oscuro_icon);
                     allergens.add("dairy");
                 } else {
-                    ivLeche.setImageResource(R.drawable.dairy_oscuro_icon);
+                    ivLeche.setImageResource(R.drawable.dairy_icon);
                     allergens.remove("dairy");
                 }
             }
@@ -186,10 +199,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivSoja.setImageResource(R.drawable.soy_icon);
+                    ivSoja.setImageResource(R.drawable.soy_oscuro_icon);
                     allergens.add("soy");
                 } else {
-                    ivSoja.setImageResource(R.drawable.soy_oscuro_icon);
+                    ivSoja.setImageResource(R.drawable.soy_icon);
                     allergens.remove("soy");
                 }
             }
@@ -201,10 +214,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivPescado.setImageResource(R.drawable.fish_icon);
+                    ivPescado.setImageResource(R.drawable.fish_oscuro_icon);
                     allergens.add("fish");
                 } else {
-                    ivPescado.setImageResource(R.drawable.fish_oscuro_icon);
+                    ivPescado.setImageResource(R.drawable.fish_icon);
                     allergens.remove("fish");
                 }
             }
@@ -216,10 +229,10 @@ public class CreateDish extends AppCompatActivity {
             public void onClick(View v) {
                 isPressed = !isPressed;
                 if (isPressed) {
-                    ivMustard.setImageResource(R.drawable.mustard_icon);
+                    ivMustard.setImageResource(R.drawable.mustard_oscuro_icon);
                     allergens.add("mustard");
                 } else {
-                    ivMustard.setImageResource(R.drawable.mustard_oscuro_icon);
+                    ivMustard.setImageResource(R.drawable.mustard_icon);
                     allergens.remove("mustard");
                 }
             }
@@ -228,7 +241,7 @@ public class CreateDish extends AppCompatActivity {
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showOptionsDialog();
             }
         });
 
@@ -239,14 +252,19 @@ public class CreateDish extends AppCompatActivity {
                 String dishName = etDishName.getText().toString().trim();
                 EditText etDishDesc = txtDishDesc.getEditText();
                 String dishDesc = etDishDesc.getText().toString().trim();
-                Dish d =new Dish();
-                d.setId("1");
-                d.setName(dishName);
-                d.setDesc(dishDesc);
-                d.setAllergens(allergens);
+                EditText etDishPrice = txtDishPrice.getEditText();
+                Double dishPrice =Double.parseDouble(etDishPrice.getText().toString()) ;
+
+                StringBuilder allergensString= new StringBuilder();
+                for(String s : allergens){
+                    allergensString.append(s);
+                }
+
+                Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice, allergensString.toString());
                 Log.d("Firebase", "Dish: " + d.getId() + ", Name: " + d.getName());
 
                 database.getDatabaseReference().child("Dish").child(d.getId()).setValue(d);
+                Toast.makeText(CreateDish.this, "Se ha introducido el plato", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -287,5 +305,47 @@ public class CreateDish extends AppCompatActivity {
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_SELECT_IMAGE && data != null) {
+                Uri selectedImageUri = data.getData();
+                uploadImageToFirebase(selectedImageUri);
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageUri = getImageUri(photo);
+                uploadImageToFirebase(imageUri);
+            }
+        }
+    }
+
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        if (imageUri != null) {
+            String imageName = "image_" + System.currentTimeMillis() + ".jpg";
+
+            StorageReference imageRef = storageRef.child("imagesDish/" + imageName);
+
+            imageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            imageUrl = uri.toString();
+                            Glide.with(this).load(imageUrl).into(ivImage);
+                        });
+                    })
+                    .addOnFailureListener(exception -> {
+                        Log.e("Firebase", "Error uploading image to Firebase Storage: " + exception.getMessage());
+                    });
+        }
     }
 }
