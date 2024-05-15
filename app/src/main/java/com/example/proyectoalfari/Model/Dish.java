@@ -5,7 +5,6 @@ import android.net.Uri;
 import java.util.ArrayList;
 
 public class Dish {
-    private String id;
     private String name;
     private String desc;
     private String imageUrl;
@@ -16,20 +15,11 @@ public class Dish {
     }
 
     public Dish(String id, String name, String desc, String imageUrl, Double price, String allergens) {
-        this.id = id;
         this.name = name;
         this.desc = desc;
         this.imageUrl = imageUrl;
         this.price = price;
         this.allergens = allergens;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

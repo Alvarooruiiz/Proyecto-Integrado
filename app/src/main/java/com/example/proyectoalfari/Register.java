@@ -181,6 +181,6 @@ public class Register extends AppCompatActivity {
         user.setDate(dateText);
         Log.d("Firebase", "User: " + user.getUserName() + ", Email: " + user.getEmail());
 
-        database.getDatabaseReference().child("User").child(user.getUid()).setValue(user);
+        database.getDatabaseReference().child("User").child(user.getUserName()).setValue(user);
     }
 }

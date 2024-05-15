@@ -261,9 +261,9 @@ public class CreateDish extends AppCompatActivity {
                 }
 
                 Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice, allergensString.toString());
-                Log.d("Firebase", "Dish: " + d.getId() + ", Name: " + d.getName());
+                Log.d("Firebase", "Dish: Name: " + d.getName());
 
-                database.getDatabaseReference().child("Dish").child(d.getId()).setValue(d);
+                database.getDatabaseReference().child("Dish").child(d.getName()).setValue(d);
                 Toast.makeText(CreateDish.this, "Se ha introducido el plato", Toast.LENGTH_SHORT).show();
             }
         });
