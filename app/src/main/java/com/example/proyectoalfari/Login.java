@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.Dish.CreateDish;
+import com.example.proyectoalfari.Menu.Menu;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class Login extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class Login extends AppCompatActivity {
 
     private Intent intentRegister;
     private Intent intentRCreate;
+    private Intent intentMenu;
 
     private TextInputLayout txtUserLog;
     private TextInputLayout txtPassLog;
@@ -47,7 +49,7 @@ public class Login extends AppCompatActivity {
         btnRegisterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentRegister = new Intent(Login.this,Register.class);
+                intentRegister = new Intent(Login.this,CreateDish.class);
                 startActivity(intentRegister);
             }
         });
@@ -65,8 +67,8 @@ public class Login extends AppCompatActivity {
                 database.checkUserCredentials(userLog, passLog, new AlfariDatabase.OnLoginResultListener() {
                     @Override
                     public void onLoginSuccess() {
-                        Intent intentRCreate = new Intent(Login.this, CreateDish.class);
-                        startActivity(intentRCreate);
+                        Intent intentMenu = new Intent(Login.this, Menu.class);
+                        startActivity(intentMenu);
                     }
 
                     @Override

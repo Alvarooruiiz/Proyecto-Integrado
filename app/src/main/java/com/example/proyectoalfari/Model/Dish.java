@@ -10,15 +10,17 @@ public class Dish {
     private String imageUrl;
     private String allergens;
     private Double price;
+    private String typeDish;
 
     public Dish() {
     }
 
-    public Dish(String id, String name, String desc, String imageUrl, Double price, String allergens) {
+    public Dish(String id, String name, String desc, String imageUrl, Double price,String typeDish, String allergens) {
         this.name = name;
         this.desc = desc;
         this.imageUrl = imageUrl;
         this.price = price;
+        this.typeDish = typeDish;
         this.allergens = allergens;
     }
 
@@ -52,6 +54,14 @@ public class Dish {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getTypeDish() {
+        return typeDish;
+    }
+
+    public void setTypeDish(String typeDish) {
+        this.typeDish = typeDish;
     }
 
     public String getAllergens() {

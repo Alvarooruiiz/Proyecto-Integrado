@@ -48,10 +48,10 @@ public class AlfariDatabase {
                     if (storedPassword != null && storedPassword.equals(password)) {
                         listener.onLoginSuccess();
                     } else {
-                        listener.onLoginFailed("Incorrect password");
+                        listener.onLoginFailed("Contraseña incorrecta");
                     }
                 } else {
-                    listener.onLoginFailed("User not found");
+                    listener.onLoginFailed("Usuario no encontrado");
                 }
             }
 
