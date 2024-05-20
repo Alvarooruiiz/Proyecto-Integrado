@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Proyecto Alfari</string>
+
+    <string-array name="dish_types">
+        <item>Entrante</item>
+        <item>Primero</item>
+        <item>Segundo</item>
+        <item>Postre</item>
+        <item>Bebida</item>
+    </string-array>
 </resources>

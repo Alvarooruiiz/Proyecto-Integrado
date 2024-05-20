@@ -9,11 +9,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.R;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,11 +31,14 @@ import java.util.List;
 
 public class Menu extends AppCompatActivity {
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private MenuPagerAdapter menuPagerAdapter;
+
     private ImageView ivQrScan;
     private RecyclerViewMenu recyclerViewMenuAdapter;
     private RecyclerView rvMenuList;
     private List<Dish> dishList;
-    private DatabaseReference databaseReference;
 
 
     @Override
@@ -39,18 +46,19 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
         ivQrScan = findViewById(R.id.ivQrScan);
-        rvMenuList = findViewById(R.id.rvMenuList);
+
+        tabLayout = findViewById(R.id.tabMenu);
+        viewPager = findViewById(R.id.viewPager);
+
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Dish");
         dishList = new ArrayList<>();
 
-        rvMenuList.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerViewMenuAdapter = new RecyclerViewMenu(dishList);
 
-        rvMenuList.setAdapter(recyclerViewMenuAdapter);
-        
-        loadDishesFromFirebase();
+
+
         ivQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,23 +70,34 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    private void loadDishesFromFirebase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dishSnapshot : snapshot.getChildren()) {
-                    Dish dish = dishSnapshot.getValue(Dish.class);
-                    dishList.add(dish);
-                }
-                recyclerViewMenuAdapter.notifyDataSetChanged();
-            }
+    private void setupViewPager(ViewPager viewPager) {
+        List<Fragment> fragments = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Menu.this, "Error al cargar los platos", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Add fragments and titles for each dish type
+        fragments.add(DishListFragment.newInstance("Entrante"));
+        titles.add("Entrantes");
+
+        fragments.add(DishListFragment.newInstance("Primero"));
+        titles.add("Primeros");
+
+        fragments.add(DishListFragment.newInstance("Segundo"));
+        titles.add("Segundos");
+
+        fragments.add(DishListFragment.newInstance("Postre"));
+        titles.add("Postres");
+
+        fragments.add(DishListFragment.newInstance("Bebida"));
+        titles.add("Bebidas");
+
+        menuPagerAdapter = new MenuPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                fragments, titles);
+
+        viewPager.setAdapter(menuPagerAdapter);
     }
+
+
 
     private void initScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);

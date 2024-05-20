@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,6 +54,7 @@ public class CreateDish extends AppCompatActivity {
     private TextInputLayout txtDishName;
     private TextInputLayout txtDishDesc;
     private TextInputLayout txtDishPrice;
+    private AutoCompleteTextView spTypeDish;
 
     private Button btnCreateDish;
 
@@ -90,6 +93,7 @@ public class CreateDish extends AppCompatActivity {
         txtDishName = findViewById(R.id.txtDishName);
         txtDishDesc = findViewById(R.id.txtDishDesc);
         txtDishPrice = findViewById(R.id.txtDishPrice);
+        spTypeDish = findViewById(R.id.spDishType);
 
         btnCreateDish = findViewById(R.id.btnCrear);
 
@@ -99,7 +103,9 @@ public class CreateDish extends AppCompatActivity {
 
         storageRef = FirebaseStorage.getInstance().getReference();
 
-
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.dish_types, android.R.layout.simple_dropdown_item_1line);
+        spTypeDish.setAdapter(adapter);
 
         ivSesamo.setOnClickListener(new View.OnClickListener() {
             boolean isPressed = true;
@@ -255,12 +261,15 @@ public class CreateDish extends AppCompatActivity {
                 EditText etDishPrice = txtDishPrice.getEditText();
                 Double dishPrice =Double.parseDouble(etDishPrice.getText().toString()) ;
 
+                String selectedOption = spTypeDish.getText().toString().trim();
+
+
                 StringBuilder allergensString= new StringBuilder();
                 for(String s : allergens){
                     allergensString.append(s);
                 }
 
-                Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice, allergensString.toString());
+                Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice,selectedOption, allergensString.toString());
                 Log.d("Firebase", "Dish: Name: " + d.getName());
 
                 database.getDatabaseReference().child("Dish").child(d.getName()).setValue(d);
@@ -268,6 +277,8 @@ public class CreateDish extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void showOptionsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

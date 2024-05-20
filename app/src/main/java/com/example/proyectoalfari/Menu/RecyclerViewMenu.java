@@ -46,6 +46,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
 
     @Override
     public int getItemCount() {
+        if (dishList == null) return 0;
         return dishList.size();
     }
 

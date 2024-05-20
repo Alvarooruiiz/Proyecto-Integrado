@@ -60,14 +60,16 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/typeDish"
         style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:hint="Ninguno"
         app:layout_constraintTop_toBottomOf="@+id/txtDishPrice"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10px">
 
         <AutoCompleteTextView
+            android:id="@+id/spDishType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
