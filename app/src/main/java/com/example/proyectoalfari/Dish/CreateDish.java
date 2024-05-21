@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectoalfari.Admin.Admin;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.R;
@@ -115,10 +116,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivSesamo.setImageResource(R.drawable.sesame_icon);
-                    allergens.add("sesame");
+                    allergens.remove("sesame");
                 } else {
                     ivSesamo.setImageResource(R.drawable.sesame_oscuro_icon);
-                    allergens.remove("sesame");
+                    allergens.add("sesame");
                 }
             }
         });
@@ -131,10 +132,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivGluten.setImageResource(R.drawable.gluten_oscuro_icon);
-                    allergens.add("gluten");
+                    allergens.remove("gluten");
                 } else {
                     ivGluten.setImageResource(R.drawable.gluten_icon);
-                    allergens.remove("gluten");
+                    allergens.add("gluten");
                 }
             }
         });
@@ -146,10 +147,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivCrustaceo.setImageResource(R.drawable.crustaceo_oscuro_icon);
-                    allergens.add("crustacean");
+                    allergens.remove("crustacean");
                 } else {
                     ivCrustaceo.setImageResource(R.drawable.crustacean_icon);
-                    allergens.remove("crustacean");
+                    allergens.add("crustacean");
                 }
             }
         });
@@ -161,10 +162,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivHuevo.setImageResource(R.drawable.egg_oscuro_icon);
-                    allergens.add("egg");
+                    allergens.remove("egg");
                 } else {
                     ivHuevo.setImageResource(R.drawable.egg_icon);
-                    allergens.remove("egg");
+                    allergens.add("egg");
                 }
             }
         });
@@ -176,10 +177,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivNueces.setImageResource(R.drawable.nuts_oscuro_icon);
-                    allergens.add("nuts");
+                    allergens.remove("nuts");
                 } else {
                     ivNueces.setImageResource(R.drawable.nuts_icon);
-                    allergens.remove("nuts");
+                    allergens.add("nuts");
                 }
             }
         });
@@ -191,10 +192,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivLeche.setImageResource(R.drawable.dairy_oscuro_icon);
-                    allergens.add("dairy");
+                    allergens.remove("dairy");
                 } else {
                     ivLeche.setImageResource(R.drawable.dairy_icon);
-                    allergens.remove("dairy");
+                    allergens.add("dairy");
                 }
             }
         });
@@ -206,10 +207,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivSoja.setImageResource(R.drawable.soy_oscuro_icon);
-                    allergens.add("soy");
+                    allergens.remove("soy");
                 } else {
                     ivSoja.setImageResource(R.drawable.soy_icon);
-                    allergens.remove("soy");
+                    allergens.add("soy");
                 }
             }
         });
@@ -221,10 +222,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivPescado.setImageResource(R.drawable.fish_oscuro_icon);
-                    allergens.add("fish");
+                    allergens.remove("fish");
                 } else {
                     ivPescado.setImageResource(R.drawable.fish_icon);
-                    allergens.remove("fish");
+                    allergens.add("fish");
                 }
             }
         });
@@ -236,10 +237,10 @@ public class CreateDish extends AppCompatActivity {
                 isPressed = !isPressed;
                 if (isPressed) {
                     ivMustard.setImageResource(R.drawable.mustard_oscuro_icon);
-                    allergens.add("mustard");
+                    allergens.remove("mustard");
                 } else {
                     ivMustard.setImageResource(R.drawable.mustard_icon);
-                    allergens.remove("mustard");
+                    allergens.add("mustard");
                 }
             }
         });
@@ -274,6 +275,9 @@ public class CreateDish extends AppCompatActivity {
 
                 database.getDatabaseReference().child("Dish").child(d.getName()).setValue(d);
                 Toast.makeText(CreateDish.this, "Se ha introducido el plato", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateDish.this, Admin.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

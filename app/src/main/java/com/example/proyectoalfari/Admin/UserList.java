@@ -27,6 +27,8 @@ public class UserList extends AppCompatActivity{
     private RecyclerAdapterUserList adapter;
     private List<User> userList;
 
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +36,22 @@ public class UserList extends AppCompatActivity{
 
         recyclerView = findViewById(R.id.rvUserList);
         userList = new ArrayList<>();
+        adapter = new RecyclerAdapterUserList(userList);
+        recyclerView.setAdapter(adapter);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query usersQuery = databaseReference.child("User");
+        databaseReference = FirebaseDatabase.getInstance().getReference("User");
 
-        usersQuery.addValueEventListener(new ValueEventListener() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
+                    Log.d("UserList", "User: " + user.getUserName() + ", Email: " + user.getEmail());
                     userList.add(user);
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -56,7 +62,6 @@ public class UserList extends AppCompatActivity{
             }
         });
 
-        adapter = new RecyclerAdapterUserList(userList);
-        recyclerView.setAdapter(adapter);
+
     }
 }

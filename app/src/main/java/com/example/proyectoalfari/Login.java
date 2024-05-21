@@ -77,12 +77,14 @@ public class Login extends AppCompatActivity {
                         if(userLog.equals("admin") && passLog.equals("admin")){
                             Intent intentAdmin = new Intent(Login.this, Admin.class);
                             startActivity(intentAdmin);
+                        }else{
+                            Intent intentMenu = new Intent(Login.this, InitMenu.class);
+                            startActivity(intentMenu);
                         }
                         if(cbUserLog.isChecked()){
                             dbGestor.addUserLog(userLog);
                         }
-                        Intent intentMenu = new Intent(Login.this, InitMenu.class);
-                        startActivity(intentMenu);
+
                     }
                     @Override
                     public void onLoginFailed(String errorMessage) {

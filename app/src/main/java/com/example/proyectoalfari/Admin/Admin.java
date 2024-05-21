@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Dish.CreateDish;
+import com.example.proyectoalfari.Login;
 import com.example.proyectoalfari.R;
 
 public class Admin extends AppCompatActivity {
@@ -43,6 +44,8 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbGestor.deleteUserLog();
+                Intent intent = new Intent(Admin.this, Login.class);
+                startActivity(intent);
             }
         });
 

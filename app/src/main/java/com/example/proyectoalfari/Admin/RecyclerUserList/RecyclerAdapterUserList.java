@@ -25,13 +25,13 @@ public class RecyclerAdapterUserList extends RecyclerView.Adapter<RecyclerAdapte
 
     @NonNull
     @Override
-    public RecyclerAdapterUserList.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.component_user_list_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterUserList.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         User user = userList.get(position);
         holder.tvUserName.setText(user.getUserName());
         holder.tvUserEmail.setText(user.getEmail());
@@ -47,7 +47,6 @@ public class RecyclerAdapterUserList extends RecyclerView.Adapter<RecyclerAdapte
 
     @Override
     public int getItemCount() {
-        if (userList == null) return 0;
         return userList.size();
     }
 
