@@ -58,7 +58,7 @@ public class Login extends AppCompatActivity {
         btnRegisterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentRegister = new Intent(Login.this,CreateDish.class);
+                intentRegister = new Intent(Login.this,Register.class);
                 startActivity(intentRegister);
             }
         });
@@ -75,8 +75,8 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onLoginSuccess() {
                         if(userLog.equals("admin") && passLog.equals("admin")){
-                            Intent intentMenu = new Intent(Login.this, Admin.class);
-                            startActivity(intentMenu);
+                            Intent intentAdmin = new Intent(Login.this, Admin.class);
+                            startActivity(intentAdmin);
                         }
                         if(cbUserLog.isChecked()){
                             dbGestor.addUserLog(userLog);
