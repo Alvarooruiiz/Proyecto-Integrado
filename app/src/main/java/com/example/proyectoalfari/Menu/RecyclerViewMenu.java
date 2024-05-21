@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,9 +21,12 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
     private List<Dish> dishList;
     private List<Dish> selectedDishes;
 
+    private CardView cardViewContainer;
 
-    public RecyclerViewMenu(List<Dish> dishList) {
+
+    public RecyclerViewMenu(List<Dish> dishList, CardView cardViewContainer) {
         this.dishList = dishList;
+        this.cardViewContainer = cardViewContainer;
     }
 
     @NonNull
@@ -42,6 +46,14 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         holder.btnAdd.setOnClickListener(v -> {
             selectedDishes.add(dish);
         });
+
+        holder.ivImage.setOnClickListener(v -> {
+            showDishDetail(dish);
+        });
+    }
+
+    public void showDishDetail(Dish dish) {
+        ImageView ivDishDetailImage = cardViewContainer.findViewById(R.id.ivDishDetailImage);
     }
 
     @Override
