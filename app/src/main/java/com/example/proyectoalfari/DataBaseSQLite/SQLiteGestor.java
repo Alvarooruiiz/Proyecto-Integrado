@@ -15,14 +15,14 @@ public class SQLiteGestor {
         dbRead=dbHelper.getReadableDatabase();
     }
 
-    public long insertarUsuarioLogueado(String username) {
+    public long addUserLog(String username) {
         ContentValues values=new ContentValues();
         values.put(SQLiteBDContract.BDTablas.COLUMN_USERNAME, username);
         values.put(SQLiteBDContract.BDTablas.COLUMN_DATOS, "nada");
         return dbWrite.insert(SQLiteBDContract.BDTablas.TABLE_NAME, null, values);
     }
 
-    public String getUsuarioLogueado() {
+    public String getUserLog() {
         String username = null;
         Cursor cursor = dbRead.rawQuery("SELECT " + SQLiteBDContract.BDTablas.COLUMN_USERNAME + " FROM " + SQLiteBDContract.BDTablas.TABLE_NAME, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -34,7 +34,7 @@ public class SQLiteGestor {
         return username;
     }
 
-    public void eliminarUsuarioLogueado() {
+    public void deleteUserLog() {
         dbWrite.delete(SQLiteBDContract.BDTablas.TABLE_NAME, null, null);
     }
 }

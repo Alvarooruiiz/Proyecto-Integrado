@@ -35,6 +35,8 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".Login"/>
+        <activity android:name=".InitMenu.InitMenu"/>
+        <activity android:name=".Admin.Admin"/>
     </application>
 
 </manifest>

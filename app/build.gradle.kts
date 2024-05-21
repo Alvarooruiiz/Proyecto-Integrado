@@ -47,6 +47,10 @@ dependencies {
 
     implementation ("androidx.core:core-splashscreen:1.0.0")
 
+    implementation ("com.google.android.material:material:1.4.0")
+    implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
+    implementation ("androidx.appcompat:appcompat:1.3.1")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

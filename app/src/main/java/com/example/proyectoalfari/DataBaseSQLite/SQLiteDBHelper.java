@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-/*
-Esta clase define la estructura de la base de datos local SQLite de autologin
- */
 public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 8;
@@ -16,7 +13,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + SQLiteBDContract.BDTablas.TABLE_NAME;
 
-    // Definimos la sentencia que creará nuestra tabla en SQLite y sus columnas.
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + SQLiteBDContract.BDTablas.TABLE_NAME + " (" +
                     SQLiteBDContract.BDTablas.COLUMN_USERNAME + " TEXT PRIMARY KEY," +
