@@ -15,26 +15,128 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/ivDishImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop" />
+                android:id="@+id/ivClose"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/cross"
+                android:layout_gravity="right"/>
+
+
+            <ImageView
+                android:id="@+id/ivDishDetailImage"
+                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                />
 
             <TextView
-                android:id="@+id/tvDishName"
+                android:id="@+id/tvDishDetailName"
+                android:text="Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
-                android:id="@+id/tvDishDescription"
+                android:id="@+id/tvDishDetailDescription"
+                android:text="Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginBottom="20dp"/>
+            <TextView
+                android:id="@+id/tvDishDetailPrice"
+                android:text="Price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="20dp"/>
 
+            <LinearLayout
+                android:id="@+id/lyCont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+                    <ImageView
+                        android:id="@+id/ibDetailCrustacean"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/crustacean_icon"
+                        android:layout_weight="1"/>
+                    <ImageView
+                            android:id="@+id/ibDetailGluten"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/gluten_icon"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/ibDetailEgg"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/egg_icon"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/ibDetailSesame"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/sesame_icon"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="5"
+                    android:layout_marginTop="20dp">
+                    <ImageView
+                        android:id="@+id/ibDetailNut"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/nuts_icon"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/ibDetailDairy"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/dairy_icon"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/ibDetailFish"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/fish_icon"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/ibDetailSoy"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/soy_icon"
+                        android:layout_weight="1" />
+                    <ImageView
+                        android:id="@+id/ibDetailMustard"
+                        android:layout_width="170px"
+                        android:layout_height="170px"
+                        android:src="@drawable/mustard_icon"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -57,7 +57,7 @@ public class DishListFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         typeDish = getArguments().getString(ARG_TYPE_DISH);
 
-        adapter = new RecyclerViewMenu(dishList);
+        adapter = new RecyclerViewMenu(dishList, view.findViewById(R.id.cardViewDishDetail));
         recyclerView.setAdapter(adapter);
         loadDishesFromFirebase();
         return view;
