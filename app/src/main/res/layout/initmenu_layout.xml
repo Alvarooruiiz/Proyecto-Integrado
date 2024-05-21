@@ -35,14 +35,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCartaDish"/>
-    <ImageView
-        android:id="@+id/ivGoogleMaps"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/google"
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCartaDrink"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="6dp"
+        android:layout_margin="10dp"
+        android:layout_marginRight="10dp">
+        <ImageView
+            android:id="@+id/ivGoogleMaps"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:src="@drawable/google_maps2"
+            />
+    </androidx.cardview.widget.CardView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
