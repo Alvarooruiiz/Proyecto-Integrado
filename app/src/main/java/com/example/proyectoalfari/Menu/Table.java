@@ -2,9 +2,9 @@ package com.example.proyectoalfari.Menu;
 
 public class Table {
     private int id;
-    private int numQR;
+    private String numQR;
 
-    public Table(int id, int numQR) {
+    public Table(int id, String numQR) {
         this.id = id;
         this.numQR = numQR;
     }
@@ -17,11 +17,11 @@ public class Table {
         this.id = id;
     }
 
-    public int getNumQR() {
+    public String getNumQR() {
         return numQR;
     }
 
-    public void setNumQR(int numQR) {
+    public void setNumQR(String numQR) {
         this.numQR = numQR;
     }
 }
