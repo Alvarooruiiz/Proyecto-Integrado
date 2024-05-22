@@ -1,6 +1,7 @@
 package com.example.proyectoalfari.Admin.RecyclerUserList;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectoalfari.Menu.RecyclerViewMenu;
 import com.example.proyectoalfari.Model.User;
 import com.example.proyectoalfari.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -39,8 +45,38 @@ public class RecyclerAdapterUserList extends RecyclerView.Adapter<RecyclerAdapte
         holder.btnDeleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userList.remove(position);
-                notifyItemRemoved(position);
+                new AlertDialog.Builder(v.getContext())
+                        .setTitle("Eliminar usuario")
+                        .setMessage("¿Desea eliminar este usuario de la base de datos?")
+                        .setPositiveButton("Aceptar", (dialog, which) -> {
+                            deleteUserFromDatabase(user);
+                            userList.remove(position);
+                            notifyItemRemoved(position);
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                        .create()
+                        .show();
+            }
+        });
+    }
+
+    public void deleteUserFromDatabase(User user) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    User userDB = userSnapshot.getValue(User.class);
+                    if (userDB.getEmail().equals(user.getEmail())) {
+                        userSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("Error al eliminar el usuario de la base de datos");
             }
         });
     }

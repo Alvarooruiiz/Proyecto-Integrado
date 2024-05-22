@@ -36,6 +36,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation (platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation ("com.google.firebase:firebase-firestore:24.3.0")
+    implementation ("com.google.firebase:firebase-analytics:21.0.0")
 
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-firestore")
@@ -52,6 +54,10 @@ dependencies {
     implementation ("androidx.appcompat:appcompat:1.3.1")
 
     implementation ("com.google.android.material:material:1.6.0")
+
+
+
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

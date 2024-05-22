@@ -23,6 +23,7 @@ public class Admin extends AppCompatActivity {
     private CardView cvUserList;
     private CardView cvAddPhoto;
     private CardView cvChangeLocation;
+    private CardView cvAddTable;
 
     private SQLiteGestor dbGestor;
     @Override
@@ -37,6 +38,7 @@ public class Admin extends AppCompatActivity {
         cvUserList = findViewById(R.id.cvUserList);
         cvAddPhoto = findViewById(R.id.cvAddPhoto);
         cvChangeLocation = findViewById(R.id.cvChangeLocation);
+        cvAddTable = findViewById(R.id.cvAddTable);
 
         dbGestor = new SQLiteGestor(this);
 
@@ -73,6 +75,13 @@ public class Admin extends AppCompatActivity {
             }
         });
         cvChangeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        cvAddTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

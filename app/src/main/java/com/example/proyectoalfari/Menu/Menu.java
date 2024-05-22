@@ -35,7 +35,6 @@ public class Menu extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuPagerAdapter menuPagerAdapter;
 
-    private ImageView ivQrScan;
     private RecyclerViewMenu recyclerViewMenuAdapter;
     private RecyclerView rvMenuList;
     private List<Dish> dishList;
@@ -47,7 +46,6 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
-        ivQrScan = findViewById(R.id.ivQrScan);
 
         tabLayout = findViewById(R.id.tabMenu);
         viewPager = findViewById(R.id.viewPager);
@@ -57,16 +55,6 @@ public class Menu extends AppCompatActivity {
 
 
         dishList = new ArrayList<>();
-
-
-
-
-        ivQrScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initScanner();
-            }
-        });
 
 
 
@@ -101,28 +89,5 @@ public class Menu extends AppCompatActivity {
 
 
 
-    private void initScanner() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setTorchEnabled(false);
-        integrator.setBeepEnabled(true);
-        integrator.initiateScan();
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show();
-            } else {
-                String query = result.getContents();
-
-            }
-        }
-    }
 }

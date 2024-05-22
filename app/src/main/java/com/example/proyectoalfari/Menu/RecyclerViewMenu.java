@@ -1,5 +1,6 @@
 package com.example.proyectoalfari.Menu;
 
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +51,16 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         });
 
         holder.ivImage.setOnClickListener(v -> {
-            showDishDetail(dish);
+            showDishDetail(holder.itemView,dish);
         });
     }
 
-    public void showDishDetail(Dish dish) {
+    public void showDishDetail(View parentView,Dish dish) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(parentView.getContext());
+        LayoutInflater inflater = LayoutInflater.from(parentView.getContext());
+        View detailView = inflater.inflate(R.layout.cardview_dish_detail, null);
+
         ImageView ivClose = cardViewContainer.findViewById(R.id.ivClose);
         ImageView ivDishDetailImage = cardViewContainer.findViewById(R.id.ivDishDetailImage);
         TextView tvDishDetailName = cardViewContainer.findViewById(R.id.tvDishDetailName);
@@ -86,8 +92,11 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         ibDetailSoy.setVisibility(allergens.contains("soy") ? View.VISIBLE : View.GONE);
         ibDetailMustard.setVisibility(allergens.contains("mustard") ? View.VISIBLE : View.GONE);
 
-        cardViewContainer.setVisibility(View.VISIBLE);
-        ivClose.setOnClickListener(v -> cardViewContainer.setVisibility(View.GONE));
+        builder.setView(detailView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        ivClose.setOnClickListener(v -> dialog.dismiss());
     }
 
     @Override

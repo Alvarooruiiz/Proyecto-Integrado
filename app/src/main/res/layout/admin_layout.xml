@@ -112,6 +112,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cvAddTable"
             app:cardCornerRadius="6dp"
             android:layout_marginRight="30dp"
             android:layout_marginLeft="10dp"

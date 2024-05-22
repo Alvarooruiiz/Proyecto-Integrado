@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoalfari.Admin.RecyclerUserList.RecyclerAdapterUserList;
@@ -40,7 +41,7 @@ public class UserList extends AppCompatActivity{
         recyclerView.setAdapter(adapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("User");
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

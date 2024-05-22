@@ -14,6 +14,8 @@ import androidx.cardview.widget.CardView;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Menu.Menu;
 import com.example.proyectoalfari.R;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class InitMenu extends AppCompatActivity {
 
@@ -23,6 +25,10 @@ public class InitMenu extends AppCompatActivity {
     private CardView cvGoogleMaps;
 
     private SQLiteGestor dbGestor;
+
+    private ImageView ivQrScan;
+
+    private int qrNumber;
     private final Uri direccion = Uri.parse("geo:0,0?q=36.718532,-4.421423(Restaurante Alfari)");
 
     @Override
@@ -37,18 +43,13 @@ public class InitMenu extends AppCompatActivity {
 
         dbGestor = new SQLiteGestor(this);
 
-        Toolbar toolbar = findViewById(R.id.topAppBar);
-        setSupportActionBar(toolbar);
+        ivQrScan = findViewById(R.id.ivQrScan);
 
-        toolbar.setNavigationOnClickListener(view -> {
-
-        });
-
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_profile) {
-                dbGestor.deleteUserLog();
+        ivQrScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initScanner();
             }
-            return false;
         });
 
         cvGoogleMaps.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +60,7 @@ public class InitMenu extends AppCompatActivity {
                 startActivity(mapIntent);
             }
         });
+
 
         cvCartaDish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +77,36 @@ public class InitMenu extends AppCompatActivity {
                 Toast.makeText(InitMenu.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initScanner() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setTorchEnabled(false);
+        integrator.setBeepEnabled(true);
+        integrator.initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show();
+            } else {
+                String qrContent = result.getContents();
+                try {
+                    qrNumber = Integer.parseInt(qrContent);
+                    Toast.makeText(this, "Código QR: " + qrNumber, Toast.LENGTH_LONG).show();
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "El código QR no es un número válido", Toast.LENGTH_LONG).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }
