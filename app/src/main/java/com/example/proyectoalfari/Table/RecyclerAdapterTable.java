@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -44,18 +45,21 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
             table.setStatus(false);
         }
         if (table.getStatus().equals("true")) {
-            holder.cvMesa.setCardBackgroundColor(Color.GREEN);
-            holder.tvTableStatus.setText("Libre");
-        } else {
             holder.cvMesa.setCardBackgroundColor(Color.WHITE);
             holder.tvTableStatus.setText("Ocupado");
+
+        } else {
+            holder.cvMesa.setCardBackgroundColor(Color.GREEN);
+            holder.tvTableStatus.setText("Libre");
         }
         generateQRCode(table.getNumQR(), holder.ivQrImage);
 
         holder.btnTableOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(table.getStatus().equals("true")){
+                    Toast.makeText(v.getContext(), "La mesa está libre", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

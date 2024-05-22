@@ -134,7 +134,7 @@ public class TableList extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 exist = false;
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
-                    String code = tableSnapshot.child("tableCode").getValue(String.class);
+                    String code = tableSnapshot.child("numQR").getValue(String.class);
                     if (code != null && code.equals(tableCode)) {
                         exist = true;
                         break;
