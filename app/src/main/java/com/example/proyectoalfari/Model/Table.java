@@ -5,6 +5,9 @@ public class Table {
     private String numQR;
     private Boolean status;
 
+    public Table() {
+    }
+
     public Table(String id, String numQR) {
         this.id = id;
         this.numQR = numQR;

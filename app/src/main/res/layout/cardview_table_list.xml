@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <LinearLayout
-                android:layout_width="300dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
@@ -30,11 +30,17 @@
                     android:layout_height="wrap_content"
                     android:text="Estado"/>
             </LinearLayout>
-            <ImageView
-                android:id="@+id/ivQrImage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/ivQrImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+
         </LinearLayout>
         <Button
             android:id="@+id/btnTableOrder"

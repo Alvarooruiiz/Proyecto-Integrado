@@ -38,6 +38,7 @@
         <activity android:name=".InitMenu.InitMenu"/>
         <activity android:name=".Admin.Admin"/>
         <activity android:name=".Admin.UserList"/>
+        <activity android:name=".Table.TableList"/>
     </application>
 
 </manifest>

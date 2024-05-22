@@ -32,7 +32,7 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
     @NonNull
     @Override
     public RecyclerAdapterTable.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_mesas, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_table_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,6 +40,9 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
     public void onBindViewHolder(@NonNull RecyclerAdapterTable.ViewHolder holder, int position) {
         Table table = listTable.get(position);
         holder.tvTableNumber.setText("Mesa: " + table.getNumQR());
+        if(table.getStatus()==null){
+            table.setStatus(false);
+        }
         if (table.getStatus().equals("true")) {
             holder.cvMesa.setCardBackgroundColor(Color.GREEN);
             holder.tvTableStatus.setText("Libre");

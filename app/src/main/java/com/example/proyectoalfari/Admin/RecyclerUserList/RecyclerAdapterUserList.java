@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoalfari.Menu.RecyclerViewMenu;
 import com.example.proyectoalfari.Model.User;
 import com.example.proyectoalfari.R;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +31,7 @@ public class RecyclerAdapterUserList extends RecyclerView.Adapter<RecyclerAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.component_user_list_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_user_list_layout, parent, false);
         return new ViewHolder(view);
     }
 
