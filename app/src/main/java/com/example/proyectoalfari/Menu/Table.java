@@ -1,19 +1,19 @@
 package com.example.proyectoalfari.Menu;
 
 public class Table {
-    private int id;
+    private String id;
     private String numQR;
 
-    public Table(int id, String numQR) {
+    public Table(String id, String numQR) {
         this.id = id;
         this.numQR = numQR;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
