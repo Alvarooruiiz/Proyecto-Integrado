@@ -1,10 +1,12 @@
 package com.example.proyectoalfari.InitMenu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class InitMenu extends AppCompatActivity {
 
     private CardView cvCartaDish;
+    private CardView cvTable;
     private CardView cvCartaDrink;
     private CardView cvUserSettings;
 
@@ -34,11 +37,13 @@ public class InitMenu extends AppCompatActivity {
     private SQLiteGestor dbGestor;
 
     private ImageView ivQrScan;
+    private TextView tvTable;
 
     private String qrNumber;
     private Boolean qrExist = false;
     private final Uri direccion = Uri.parse("geo:0,0?q=36.718532,-4.421423(Restaurante Alfari)");
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +53,12 @@ public class InitMenu extends AppCompatActivity {
         cvCartaDrink = findViewById(R.id.cvCartaDrink);
         cvUserSettings = findViewById(R.id.cvUserSettings);
         cvGoogleMaps = findViewById(R.id.cvGoogleMaps);
+        cvTable = findViewById(R.id.cvTable);
 
         dbGestor = new SQLiteGestor(this);
 
         ivQrScan = findViewById(R.id.ivQrScan);
+        tvTable = findViewById(R.id.tvTable);
 
         ivQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,12 +80,12 @@ public class InitMenu extends AppCompatActivity {
             cvCartaDish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(qrExistOnDatabase()){
+//                    if(qrExistOnDatabase()){
                     Intent intent = new Intent(InitMenu.this, Menu.class);
                     startActivity(intent);
-                    }else {
-                        Toast.makeText(v.getContext(), "El QR no es correcto", Toast.LENGTH_SHORT).show();
-                    }
+//                    }else {
+//                        Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
+//                    }
                 }
             });
 
@@ -121,7 +128,8 @@ public class InitMenu extends AppCompatActivity {
                 String qrContent = result.getContents();
                 try {
                     qrNumber = qrContent;
-                    Toast.makeText(this, "Código QR: " + qrNumber, Toast.LENGTH_LONG).show();
+                    qrExistOnDatabase();
+                    if(!qrExistOnDatabase()) Toast.makeText(this, "Mesa no encontrada", Toast.LENGTH_SHORT).show();
                 } catch (NumberFormatException e) {
                     Toast.makeText(this, "El código QR no es un número válido", Toast.LENGTH_LONG).show();
                 }
@@ -133,13 +141,14 @@ public class InitMenu extends AppCompatActivity {
 
     public Boolean qrExistOnDatabase(){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
-        qrExist = false;
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
                     if(tableSnapshot.child("numQR").getValue(String.class).equals(qrNumber)){
-                        Toast.makeText(InitMenu.this, "Mesa encontrada", Toast.LENGTH_SHORT).show();
+                        ivQrScan.setVisibility(View.GONE);
+                        tvTable.setText("Mesa: " + qrNumber);
+                        cvTable.setVisibility(View.VISIBLE);
                         qrExist= true;
                         break;
                     }

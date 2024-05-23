@@ -8,7 +8,7 @@
 
     android:id="@+id/main"
     tools:context=".Login"
-    android:background="#757575">
+    android:background="#FFFFFF">
 
 
     <TextView

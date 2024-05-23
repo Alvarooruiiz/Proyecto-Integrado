@@ -40,8 +40,6 @@ public class Menu extends AppCompatActivity {
     private List<Dish> dishList;
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +53,11 @@ public class Menu extends AppCompatActivity {
 
 
         dishList = new ArrayList<>();
-
-
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
         List<Fragment> fragments = new ArrayList<>();
         List<String> titles = new ArrayList<>();
-
-        // Add fragments and titles for each dish type
         fragments.add(DishListFragment.newInstance("Entrante"));
         titles.add("Entrantes");
 
@@ -86,8 +79,4 @@ public class Menu extends AppCompatActivity {
 
         viewPager.setAdapter(menuPagerAdapter);
     }
-
-
-
-
 }

@@ -11,17 +11,19 @@ public class Dish {
     private String allergens;
     private Double price;
     private String typeDish;
+    private int quantity;
 
     public Dish() {
     }
 
-    public Dish(String id, String name, String desc, String imageUrl, Double price,String typeDish, String allergens) {
+    public Dish(String id, String name, String desc, String imageUrl, Double price,String typeDish, String allergens, int quantity) {
         this.name = name;
         this.desc = desc;
         this.imageUrl = imageUrl;
         this.price = price;
         this.typeDish = typeDish;
         this.allergens = allergens;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -70,5 +72,13 @@ public class Dish {
 
     public void setAllergens(String allergens) {
         this.allergens = allergens;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

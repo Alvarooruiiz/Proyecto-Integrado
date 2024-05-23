@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,6 +57,16 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         });
     }
 
+    private void addDishToSelected(Dish dish) {
+        for (Dish selectedDish : selectedDishes) {
+            if (selectedDish.getName().equals(dish.getName())) {
+                selectedDish.setQuantity(selectedDish.getQuantity() + 1);
+                return;
+            }
+        }
+        selectedDishes.add(dish);
+    }
+
     public void showDishDetail(View parentView,Dish dish) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(parentView.getContext());
@@ -95,8 +107,19 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         builder.setView(detailView);
         AlertDialog dialog = builder.create();
         dialog.show();
-
-        ivClose.setOnClickListener(v -> dialog.dismiss());
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.dimAmount = 0.7f;
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setAttributes(layoutParams);
+        }
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override

@@ -270,7 +270,7 @@ public class CreateDish extends AppCompatActivity {
                     allergensString.append(s);
                 }
 
-                Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice,selectedOption, allergensString.toString());
+                Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice,selectedOption, allergensString.toString(),0);
                 Log.d("Firebase", "Dish: Name: " + d.getName());
 
                 database.getDatabaseReference().child("Dish").child(d.getName()).setValue(d);

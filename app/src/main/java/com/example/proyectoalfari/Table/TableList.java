@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -98,6 +100,14 @@ public class TableList extends AppCompatActivity {
 
         builder.setView(view);
         AlertDialog dialog = builder.create();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.dimAmount = 0.7f;
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setAttributes(layoutParams);
+        }
+
         dialog.show();
 
         btnSaveTable.setOnClickListener(new View.OnClickListener() {
