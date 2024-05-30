@@ -33,19 +33,23 @@ public class DishListFragment extends Fragment {
     private RecyclerViewMenu adapter;
     private List<Dish> dishList;
     private DatabaseReference databaseReference;
-
+    private RecyclerViewMenu.OnDishSelectedListener onDishSelectedListener;
 
     public DishListFragment() {
     }
 
-    public static Fragment newInstance(String typeDish) {
+    public static Fragment newInstance(String typeDish, RecyclerViewMenu.OnDishSelectedListener listener) {
         DishListFragment fragment = new DishListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TYPE_DISH, typeDish);
         fragment.setArguments(args);
+        fragment.setOnDishSelectedListener(listener);
         return fragment;
     }
 
+    public void setOnDishSelectedListener(RecyclerViewMenu.OnDishSelectedListener listener) {
+        this.onDishSelectedListener = listener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +62,7 @@ public class DishListFragment extends Fragment {
         typeDish = getArguments().getString(ARG_TYPE_DISH);
 
         adapter = new RecyclerViewMenu(dishList, view.findViewById(R.id.cardViewDishDetail));
+        adapter.setOnDishSelectedListener(onDishSelectedListener);
         recyclerView.setAdapter(adapter);
         loadDishesFromFirebase();
         return view;

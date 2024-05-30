@@ -3,25 +3,25 @@ package com.example.proyectoalfari.Model;
 import java.util.List;
 
 public class DishOrder {
-    private int id;
+    private String id;
     private String idTable;
     private List<Dish> dishListOrder;
 
     public DishOrder() {
     }
 
-    public DishOrder(int id, String idTable, List<Dish> dishListOrder ) {
+    public DishOrder(String id, String idTable, List<Dish> dishListOrder ) {
         this.id = id;
         this.idTable = idTable;
         this.dishListOrder = dishListOrder;
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

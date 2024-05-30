@@ -22,16 +22,16 @@ import java.util.List;
 
 public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.ViewHolder>{
     private List<Dish> dishList;
-
-    private OnAddButtonClickListener addButtonClickListener;
     private CardView cardViewContainer;
-
-
-
+    private OnDishSelectedListener onDishSelectedListener;
 
     public RecyclerViewMenu(List<Dish> dishList, CardView cardViewContainer) {
         this.dishList = dishList;
         this.cardViewContainer = cardViewContainer;
+    }
+
+    public void setOnDishSelectedListener(OnDishSelectedListener listener) {
+        this.onDishSelectedListener = listener;
     }
 
     @NonNull
@@ -49,7 +49,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
                 .load(dish.getImageUrl())
                 .into(holder.ivImage);
         holder.btnAdd.setOnClickListener(v -> {
-            addButtonClickListener.onAddButtonClick(dish);
+            onDishSelectedListener.onDishSelected(dish);
         });
 
         holder.ivImage.setOnClickListener(v -> {
@@ -57,6 +57,9 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         });
     }
 
+    public interface OnDishSelectedListener {
+        void onDishSelected(Dish dish);
+    }
 
 
     public void showDishDetail(View parentView,Dish dish) {
@@ -65,22 +68,22 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         LayoutInflater inflater = LayoutInflater.from(parentView.getContext());
         View detailView = inflater.inflate(R.layout.cardview_dish_detail, null);
 
-        ImageView ivClose = cardViewContainer.findViewById(R.id.ivClose);
-        ImageView ivDishDetailImage = cardViewContainer.findViewById(R.id.ivDishDetailImage);
-        TextView tvDishDetailName = cardViewContainer.findViewById(R.id.tvDishDetailName);
-        TextView tvDishDetailDescription = cardViewContainer.findViewById(R.id.tvDishDetailDescription);
-        TextView tvDishDetailPrice = cardViewContainer.findViewById(R.id.tvDishDetailPrice);
-        ImageView ibDetailCrustacean = cardViewContainer.findViewById(R.id.ibDetailCrustacean);
-        ImageView ibDetailGluten = cardViewContainer.findViewById(R.id.ibDetailGluten);
-        ImageView ibDetailEgg = cardViewContainer.findViewById(R.id.ibDetailEgg);
-        ImageView ibDetailSesame = cardViewContainer.findViewById(R.id.ibDetailSesame);
-        ImageView ibDetailNut = cardViewContainer.findViewById(R.id.ibDetailNut);
-        ImageView ibDetailDairy = cardViewContainer.findViewById(R.id.ibDetailDairy);
-        ImageView ibDetailFish = cardViewContainer.findViewById(R.id.ibDetailFish);
-        ImageView ibDetailSoy = cardViewContainer.findViewById(R.id.ibDetailSoy);
-        ImageView ibDetailMustard = cardViewContainer.findViewById(R.id.ibDetailMustard);
+        ImageView ivClose = detailView.findViewById(R.id.ivClose);
+        ImageView ivDishDetailImage = detailView.findViewById(R.id.ivDishDetailImage);
+        TextView tvDishDetailName = detailView.findViewById(R.id.tvDishDetailName);
+        TextView tvDishDetailDescription = detailView.findViewById(R.id.tvDishDetailDescription);
+        TextView tvDishDetailPrice = detailView.findViewById(R.id.tvDishDetailPrice);
+        ImageView ibDetailCrustacean = detailView.findViewById(R.id.ibDetailCrustacean);
+        ImageView ibDetailGluten = detailView.findViewById(R.id.ibDetailGluten);
+        ImageView ibDetailEgg = detailView.findViewById(R.id.ibDetailEgg);
+        ImageView ibDetailSesame = detailView.findViewById(R.id.ibDetailSesame);
+        ImageView ibDetailNut = detailView.findViewById(R.id.ibDetailNut);
+        ImageView ibDetailDairy = detailView.findViewById(R.id.ibDetailDairy);
+        ImageView ibDetailFish = detailView.findViewById(R.id.ibDetailFish);
+        ImageView ibDetailSoy = detailView.findViewById(R.id.ibDetailSoy);
+        ImageView ibDetailMustard = detailView.findViewById(R.id.ibDetailMustard);
 
-        Glide.with(cardViewContainer.getContext()).load(dish.getImageUrl()).into(ivDishDetailImage);
+        Glide.with(detailView.getContext()).load(dish.getImageUrl()).into(ivDishDetailImage);
         tvDishDetailName.setText(dish.getName());
         tvDishDetailDescription.setText(dish.getAllergens());
         tvDishDetailPrice.setText(String.valueOf(dish.getPrice()));
