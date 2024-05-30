@@ -29,30 +29,43 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu extends AppCompatActivity {
+public class Menu extends AppCompatActivity implements OnAddButtonClickListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private MenuPagerAdapter menuPagerAdapter;
 
-    private RecyclerViewMenu recyclerViewMenuAdapter;
-    private RecyclerView rvMenuList;
-    private List<Dish> dishList;
+    private ImageView ivShopIcon;
+
+    private List<Dish> selectedDishes;
+
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
+        selectedDishes = new ArrayList<>();
 
         tabLayout = findViewById(R.id.tabMenu);
         viewPager = findViewById(R.id.viewPager);
 
+        ivShopIcon = findViewById(R.id.ivShopIcon);
+
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
+        ivShopIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        dishList = new ArrayList<>();
+            }
+        });
+    }
+
+    public void onAddButtonClick(Dish dish) {
+        selectedDishes.add(dish);
     }
 
     private void setupViewPager(ViewPager viewPager) {

@@ -23,7 +23,7 @@ import java.util.List;
 public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.ViewHolder>{
     private List<Dish> dishList;
 
-
+    private OnAddButtonClickListener addButtonClickListener;
     private CardView cardViewContainer;
 
 
@@ -49,7 +49,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
                 .load(dish.getImageUrl())
                 .into(holder.ivImage);
         holder.btnAdd.setOnClickListener(v -> {
-
+            addButtonClickListener.onAddButtonClick(dish);
         });
 
         holder.ivImage.setOnClickListener(v -> {
