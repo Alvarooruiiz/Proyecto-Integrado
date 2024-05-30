@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Dish.CreateDish;
+import com.example.proyectoalfari.Dish.EditDish.EditDish;
 import com.example.proyectoalfari.Login;
 import com.example.proyectoalfari.Model.Table;
 import com.example.proyectoalfari.R;
@@ -82,7 +83,7 @@ public class Admin extends AppCompatActivity {
         cvEditPlate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, DishList.class);
+                Intent intent = new Intent(Admin.this, EditDish.class);
                 startActivity(intent);
             }
         });

@@ -273,7 +273,7 @@ public class CreateDish extends AppCompatActivity {
                 Dish d = new Dish(UUID.randomUUID().toString(), dishName, dishDesc, imageUrl,dishPrice,selectedOption, allergensString.toString(),0);
                 Log.d("Firebase", "Dish: Name: " + d.getName());
 
-                database.getDatabaseReference().child("Dish").child(d.getName()).setValue(d);
+                database.getDatabaseReference().child("Dish").child(d.getId()).setValue(d);
                 Toast.makeText(CreateDish.this, "Se ha introducido el plato", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CreateDish.this, Admin.class);
                 startActivity(intent);

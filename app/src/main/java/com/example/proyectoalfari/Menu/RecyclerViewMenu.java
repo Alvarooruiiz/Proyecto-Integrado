@@ -22,7 +22,7 @@ import java.util.List;
 
 public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.ViewHolder>{
     private List<Dish> dishList;
-    private List<Dish> selectedDishes;
+
 
     private CardView cardViewContainer;
 
@@ -49,7 +49,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
                 .load(dish.getImageUrl())
                 .into(holder.ivImage);
         holder.btnAdd.setOnClickListener(v -> {
-            selectedDishes.add(dish);
+
         });
 
         holder.ivImage.setOnClickListener(v -> {
@@ -57,15 +57,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         });
     }
 
-    private void addDishToSelected(Dish dish) {
-        for (Dish selectedDish : selectedDishes) {
-            if (selectedDish.getName().equals(dish.getName())) {
-                selectedDish.setQuantity(selectedDish.getQuantity() + 1);
-                return;
-            }
-        }
-        selectedDishes.add(dish);
-    }
+
 
     public void showDishDetail(View parentView,Dish dish) {
 

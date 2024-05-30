@@ -42,6 +42,9 @@
         <activity android:name=".Admin.Admin"/>
         <activity android:name=".Admin.UserList"/>
         <activity android:name=".Table.TableList"/>
+        <activity android:name=".Dish.EditDish.EditDish"/>
+
+
 
     </application>
 

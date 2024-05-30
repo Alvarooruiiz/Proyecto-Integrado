@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
+    android:visibility="visible"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivClose2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/cross"
+            android:layout_gravity="right"/>
+
+
+        <ImageView
+            android:id="@+id/ivDishDetailImage2"
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            />
+
+        <EditText
+            android:id="@+id/tvDishDetailName2"
+            android:hint="Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText
+            android:id="@+id/tvDishDetailDescription2"
+            android:hint="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"/>
+        <EditText
+            android:id="@+id/tvDishDetailPrice2"
+            android:hint="Price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/lyCont2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4">
+                <ImageView
+                    android:id="@+id/ibDetailCrustacean2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/crustaceo_oscuro_icon"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:id="@+id/ibDetailGluten2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/gluten_oscuro_icon"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ibDetailEgg2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/egg_oscuro_icon"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/ibDetailSesame2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/sesame_oscuro_icon"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                android:layout_marginTop="20dp">
+                <ImageView
+                    android:id="@+id/ibDetailNut2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/nuts_oscuro_icon"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ibDetailDairy2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/dairy_oscuro_icon"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ibDetailFish2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/fish_oscuro_icon"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ibDetailSoy2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/soy_oscuro_icon"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:id="@+id/ibDetailMustard2"
+                    android:layout_width="170px"
+                    android:layout_height="170px"
+                    android:src="@drawable/mustard_oscuro_icon"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEdit2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:text="Editar plato"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

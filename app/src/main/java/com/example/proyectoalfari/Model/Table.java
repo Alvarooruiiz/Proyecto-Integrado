@@ -1,8 +1,11 @@
 package com.example.proyectoalfari.Model;
 
+import java.util.List;
+
 public class Table {
     private String id;
     private String numQR;
+
     private Boolean status;
 
     public Table() {
@@ -37,4 +40,6 @@ public class Table {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+
 }

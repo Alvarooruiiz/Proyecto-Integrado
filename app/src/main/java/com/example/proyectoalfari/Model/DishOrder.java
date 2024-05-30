@@ -1,21 +1,20 @@
 package com.example.proyectoalfari.Model;
 
+import java.util.List;
+
 public class DishOrder {
     private int id;
     private String idTable;
-    private String nameUser;
-    private String txtDishes;
-    private Double price;
+    private List<Dish> dishListOrder;
 
     public DishOrder() {
     }
 
-    public DishOrder(int id, String idTable, String nameUser, String txtDishes, Double price) {
+    public DishOrder(int id, String idTable, List<Dish> dishListOrder ) {
         this.id = id;
         this.idTable = idTable;
-        this.nameUser = nameUser;
-        this.txtDishes = txtDishes;
-        this.price = price;
+        this.dishListOrder = dishListOrder;
+
     }
 
     public int getId() {
@@ -34,27 +33,12 @@ public class DishOrder {
         this.idTable = idTable;
     }
 
-    public String getNameUser() {
-        return nameUser;
+
+    public List<Dish> getDishListOrder() {
+        return dishListOrder;
     }
 
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
-    }
-
-    public String getTxtDishes() {
-        return txtDishes;
-    }
-
-    public void setTxtDishes(String txtDishes) {
-        this.txtDishes = txtDishes;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDishListOrder(List<Dish> dish) {
+        this.dishListOrder = dish;
     }
 }
