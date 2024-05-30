@@ -56,12 +56,12 @@ public class Menu extends AppCompatActivity implements OnAddButtonClickListener{
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        ivShopIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            ivShopIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
     }
 
     public void onAddButtonClick(Dish dish) {
