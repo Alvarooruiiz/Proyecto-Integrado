@@ -4,9 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +30,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.Model.DishOrder;
 import com.example.proyectoalfari.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
@@ -46,14 +53,16 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     private MenuPagerAdapter menuPagerAdapter;
 
     private ImageView ivShopIcon;
-
+    private Button btnVerOrder;
     private TextView tvMesa;
 
     private List<Dish> selectedDishes;
 
-    public static Context context;
+    public Context context;
 
     private FirebaseFirestore db;
+
+    private List<DishOrder> orderList;
 
 
 
@@ -65,6 +74,8 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         FirebaseApp.initializeApp(this);
         selectedDishes = new ArrayList<>();
 
+        FirebaseApp.initializeApp(this);
+
         db = FirebaseFirestore.getInstance();
 
         context = this;
@@ -73,16 +84,61 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         tabLayout = findViewById(R.id.tabMenu);
         viewPager = findViewById(R.id.viewPager);
         ivShopIcon = findViewById(R.id.ivShopIcon);
+        btnVerOrder = findViewById(R.id.btnVerOrder);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-            ivShopIcon.setOnClickListener(new View.OnClickListener() {
+        btnVerOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showBottomSheet();
                 }
             });
+
+        ivShopIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOrdersDialog();
+            }
+        });
+    }
+
+    private void showOrdersDialog() {
+        View dialogView = getLayoutInflater().inflate(R.layout.layout_dialog_order, null);
+        RecyclerView recyclerViewOrders = dialogView.findViewById(R.id.rvOrderList);
+        Button btnPay = dialogView.findViewById(R.id.btnPay);
+
+        // Configurar RecyclerView para mostrar los pedidos
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerViewOrders.setLayoutManager(layoutManager);
+        RecyclerAdapterPaymentList orderAdapter = new RecyclerAdapterPaymentList(orderList);
+        recyclerViewOrders.setAdapter(orderAdapter);
+
+        // Configurar el botón de pagar
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simulatePaymentProcess();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void simulatePaymentProcess() {
+        Toast.makeText(context, "Procesando pago...", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "¡Pago realizado con éxito!", Toast.LENGTH_SHORT).show();
+
+            }
+        }, 3000);
     }
 
     public void showBottomSheet(){
@@ -101,19 +157,44 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         tvTotalPrice.setText("Total: " + total + "€");
 
         String  mesa = tvMesa.getText().toString();
+        DishOrder dishOrder = new DishOrder("1", mesa, selectedDishes);
+
         btnMakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showConfirmationDialog(mesa);
+                showConfirmationDialog(mesa,dishOrder);
             }
         });
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(view);
+
+        bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
+                FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                if (bottomSheet != null) {
+                    BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(bottomSheet);
+                    ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+
+                    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    Display display = windowManager.getDefaultDisplay();
+                    Point size = new Point();
+                    display.getSize(size);
+                    int screenHeight = size.y;
+
+                    layoutParams.height = screenHeight / 2;
+                    bottomSheet.setLayoutParams(layoutParams);
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
+
         bottomSheetDialog.show();
     }
 
-    private void showConfirmationDialog(String mesa) {
+    private void showConfirmationDialog(String mesa, DishOrder order) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirmar Pedido")
                 .setMessage("¿Estás seguro de que deseas realizar este pedido?")
@@ -121,6 +202,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         saveOrderToFirestore(mesa);
+                        makeOrder(order);
                     }
                 })
                 .setNegativeButton("No", null)
@@ -128,15 +210,22 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     }
 
     private void saveOrderToFirestore(String mesa) {
+        String orderId = db.collection("orders").document().getId();
         DishOrder dishOrder = new DishOrder("1", mesa, selectedDishes);
         db.collection("orders")
-                .add(dishOrder)
+                .document(orderId)
+                .set(dishOrder)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(context, "Pedido realizado con éxito", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(context, "Error al realizar el pedido: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    public void makeOrder(DishOrder order){
+        orderList.add(order);
+        Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -168,6 +257,5 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     public void onDishSelected(Dish dish) {
         selectedDishes.add(dish);
         Toast.makeText(this, "Plato añadido al carrito"  + selectedDishes.size(), Toast.LENGTH_SHORT).show();
-
     }
 }

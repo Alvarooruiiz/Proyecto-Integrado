@@ -29,6 +29,7 @@ import java.util.List;
 public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecyclerAdapter.ViewHolder> {
     private List<Dish> dishList;
     private EditDish con;
+    private ArrayList<String> allergensList;
     public EditDishRecyclerAdapter(List<Dish> dishList, EditDish con) {
         this.dishList = dishList;
         this.con = con;
@@ -56,7 +57,7 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
     }
 
     public void editDishDialog(View parentView,Dish dish) {
-        ArrayList<String> allergensList = new ArrayList<>();
+        allergensList= new ArrayList<>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(parentView.getContext());
         LayoutInflater inflater = LayoutInflater.from(parentView.getContext());
@@ -84,6 +85,17 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
         tvDishDetailPrice.setText(String.valueOf(dish.getPrice()));
 
         String allergens = dish.getAllergens();
+
+        ibDetailCrustacean.setImageResource(R.drawable.crustaceo_oscuro_icon);
+        ibDetailGluten.setImageResource(R.drawable.gluten_oscuro_icon);
+        ibDetailSesame.setImageResource(R.drawable.sesame_oscuro_icon);
+        ibDetailEgg.setImageResource(R.drawable.egg_oscuro_icon);
+        ibDetailNut.setImageResource(R.drawable.nuts_oscuro_icon);
+        ibDetailDairy.setImageResource(R.drawable.dairy_oscuro_icon);
+        ibDetailFish.setImageResource(R.drawable.fish_oscuro_icon);
+        ibDetailSoy.setImageResource(R.drawable.soy_oscuro_icon);
+        ibDetailMustard.setImageResource(R.drawable.mustard_oscuro_icon);
+
         if(allergens.contains("crustacean")) ibDetailCrustacean.setImageResource(R.drawable.crustacean_icon); allergensList.add("crustacean");
         if(allergens.contains("gluten")) ibDetailGluten.setImageResource(R.drawable.gluten_icon); allergensList.add("gluten");
         if(allergens.contains("sesame")) ibDetailSesame.setImageResource(R.drawable.sesame_icon); allergensList.add("sesame");
@@ -93,10 +105,6 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
         if(allergens.contains("fish")) ibDetailFish.setImageResource(R.drawable.fish_icon); allergensList.add("fish");
         if(allergens.contains("soy")) ibDetailSoy.setImageResource(R.drawable.soy_icon); allergensList.add("soy");
         if(allergens.contains("mustard")) ibDetailMustard.setImageResource(R.drawable.mustard_icon); allergensList.add("mustard");
-
-
-
-
 
         builder.setView(detailView);
         AlertDialog dialog = builder.create();
@@ -110,10 +118,28 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
             window.setAttributes(layoutParams);
         }
 
+
+
+        setAllergenClickListener(ibDetailCrustacean, "crustacean", R.drawable.crustacean_icon, R.drawable.crustaceo_oscuro_icon);
+        setAllergenClickListener(ibDetailGluten, "gluten", R.drawable.gluten_icon, R.drawable.gluten_oscuro_icon);
+        setAllergenClickListener(ibDetailSesame, "sesame", R.drawable.sesame_icon, R.drawable.sesame_oscuro_icon);
+        setAllergenClickListener(ibDetailEgg, "egg", R.drawable.egg_icon, R.drawable.egg_oscuro_icon);
+        setAllergenClickListener(ibDetailNut, "nut", R.drawable.nuts_icon, R.drawable.nuts_oscuro_icon);
+        setAllergenClickListener(ibDetailDairy, "dairy", R.drawable.dairy_icon, R.drawable.dairy_oscuro_icon);
+        setAllergenClickListener(ibDetailFish, "fish", R.drawable.fish_icon, R.drawable.fish_oscuro_icon);
+        setAllergenClickListener(ibDetailSoy, "soy", R.drawable.soy_icon, R.drawable.soy_oscuro_icon);
+        setAllergenClickListener(ibDetailMustard, "mustard", R.drawable.mustard_icon, R.drawable.mustard_oscuro_icon);
+
+
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editDishOnFireBase(dish,detailView,allergensList);
+                StringBuilder allergensString= new StringBuilder();
+                for(String s : allergensList){
+                    allergensString.append(s);
+                }
+                editDishOnFireBase(dish,detailView,allergensString.toString());
                 dialog.dismiss();
 
             }
@@ -123,7 +149,22 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
 
     }
 
-    public void editDishOnFireBase(Dish dish,View v, List<String> allergensList){
+    private void setAllergenClickListener(ImageView imageView, String allergen, int iconActive, int iconInactive) {
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (allergensList.contains(allergen)) {
+                    allergensList.remove(allergen);
+                    imageView.setImageResource(iconInactive);
+                } else {
+                    allergensList.add(allergen);
+                    imageView.setImageResource(iconActive);
+                }
+            }
+        });
+    }
+
+    public void editDishOnFireBase(Dish dish,View v, String newAllergens){
 
         EditText tvDishDetailName= v.findViewById(R.id.tvDishDetailName2);
         String newName = tvDishDetailName.getText().toString();
@@ -132,163 +173,14 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
         EditText tvDishDetailPrice= v.findViewById(R.id.tvDishDetailPrice2);
         String newPrice = tvDishDetailPrice.getText().toString();
 
-        ImageView ibDetailCrustacean = v.findViewById(R.id.ibDetailCrustacean2);
-        ImageView ibDetailGluten = v.findViewById(R.id.ibDetailGluten2);
-        ImageView ibDetailEgg = v.findViewById(R.id.ibDetailEgg2);
-        ImageView ibDetailSesame = v.findViewById(R.id.ibDetailSesame2);
-        ImageView ibDetailNut = v.findViewById(R.id.ibDetailNut2);
-        ImageView ibDetailDairy = v.findViewById(R.id.ibDetailDairy2);
-        ImageView ibDetailFish = v.findViewById(R.id.ibDetailFish2);
-        ImageView ibDetailSoy = v.findViewById(R.id.ibDetailSoy2);
-        ImageView ibDetailMustard = v.findViewById(R.id.ibDetailMustard2);
 
 
-        ibDetailSesame.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
 
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailSesame.setImageResource(R.drawable.sesame_icon);
-                    allergensList.remove("sesame");
-                } else {
-                    ibDetailSesame.setImageResource(R.drawable.sesame_oscuro_icon);
-                    allergensList.add("sesame");
-                }
-            }
-        });
-
-        ibDetailGluten.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailGluten.setImageResource(R.drawable.gluten_oscuro_icon);
-                    allergensList.remove("gluten");
-                } else {
-                    ibDetailGluten.setImageResource(R.drawable.gluten_icon);
-                    allergensList.add("gluten");
-                }
-            }
-        });
-        ibDetailCrustacean.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailCrustacean.setImageResource(R.drawable.crustaceo_oscuro_icon);
-                    allergensList.remove("crustacean");
-                } else {
-                    ibDetailCrustacean.setImageResource(R.drawable.crustacean_icon);
-                    allergensList.add("crustacean");
-                }
-            }
-        });
-        ibDetailEgg.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailEgg.setImageResource(R.drawable.egg_oscuro_icon);
-                    allergensList.remove("egg");
-                } else {
-                    ibDetailEgg.setImageResource(R.drawable.egg_icon);
-                    allergensList.add("egg");
-                }
-            }
-        });
-        ibDetailNut.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailNut.setImageResource(R.drawable.nuts_oscuro_icon);
-                    allergensList.remove("nuts");
-                } else {
-                    ibDetailNut.setImageResource(R.drawable.nuts_icon);
-                    allergensList.add("nuts");
-                }
-            }
-        });
-        ibDetailDairy.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailDairy.setImageResource(R.drawable.dairy_oscuro_icon);
-                    allergensList.remove("dairy");
-                } else {
-                    ibDetailDairy.setImageResource(R.drawable.dairy_icon);
-                    allergensList.add("dairy");
-                }
-            }
-        });
-        ibDetailSoy.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailSoy.setImageResource(R.drawable.soy_oscuro_icon);
-                    allergensList.remove("soy");
-                } else {
-                    ibDetailSoy.setImageResource(R.drawable.soy_icon);
-                    allergensList.add("soy");
-                }
-            }
-        });
-        ibDetailFish.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailFish.setImageResource(R.drawable.fish_oscuro_icon);
-                    allergensList.remove("fish");
-                } else {
-                    ibDetailFish.setImageResource(R.drawable.fish_icon);
-                    allergensList.add("fish");
-                }
-            }
-        });
-        ibDetailMustard.setOnClickListener(new View.OnClickListener() {
-            boolean isPressed = true;
-
-            @Override
-            public void onClick(View v) {
-                isPressed = !isPressed;
-                if (isPressed) {
-                    ibDetailMustard.setImageResource(R.drawable.mustard_oscuro_icon);
-                    allergensList.remove("mustard");
-                } else {
-                    ibDetailMustard.setImageResource(R.drawable.mustard_icon);
-                    allergensList.add("mustard");
-                }
-            }
-        });
-
-        StringBuilder allergensString= new StringBuilder();
-        for(String s : allergensList){
-            allergensString.append(s);
-        }
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Dish").child(dish.getId());
 
         dish.setName(newName);
-
+        dish.setAllergens(newAllergens);
         dish.setDesc(newDesc);
         dish.setPrice(Double.parseDouble(newPrice));
 

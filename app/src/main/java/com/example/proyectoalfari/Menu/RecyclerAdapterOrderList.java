@@ -34,6 +34,7 @@ public class RecyclerAdapterOrderList extends RecyclerView.Adapter<RecyclerAdapt
     public void onBindViewHolder(@NonNull RecyclerAdapterOrderList.ViewHolder holder, int position) {
         Dish dish = selectedDishes.get(position);
         holder.dishNameTextView.setText(dish.getName());
+        holder.dishPriceTextView.setText(dish.getPrice().toString() + "€");
         holder.btnDeleteDish.setOnClickListener(v -> {
             selectedDishes.remove(position);
             notifyDataSetChanged();
@@ -48,11 +49,14 @@ public class RecyclerAdapterOrderList extends RecyclerView.Adapter<RecyclerAdapt
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView dishNameTextView;
+        TextView dishPriceTextView;
+
         Button btnDeleteDish;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dishNameTextView = itemView.findViewById(R.id.tvDishNameSelected);
+            dishPriceTextView = itemView.findViewById(R.id.tvDishPriceSelected);
             btnDeleteDish = itemView.findViewById(R.id.btnDeleteDish);
         }
     }

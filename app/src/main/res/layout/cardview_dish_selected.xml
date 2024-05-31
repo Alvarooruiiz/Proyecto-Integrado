@@ -16,15 +16,24 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvDishNameSelected"
-            android:layout_width="230dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:text="Nombre plato"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:id="@+id/tvDishPriceSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="precio"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"/>
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +47,8 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="#B33535"
-                android:text="Eliminar" />
+                android:text="Eliminar"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
 
     </LinearLayout>

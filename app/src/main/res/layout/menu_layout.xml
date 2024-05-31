@@ -9,25 +9,32 @@
         android:id="@+id/llMesa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp">
+
         <ImageView
             android:id="@+id/ivShopIcon"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/shop_icon"
-            android:layout_marginRight="23dp"/>
-
-        <TextView
-            android:id="@+id/tvMesa"
-            android:layout_width="120dp"
+            android:layout_marginLeft="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="mesa 123"
-            android:textSize="24dp"
-            android:layout_marginLeft="160dp"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="right"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvMesa"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="mesa 123"
+                android:textSize="24dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="right"/>
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
@@ -51,5 +58,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
+        <Button
+            android:id="@+id/btnVerOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver Pedido"
+            android:layout_marginRight="23dp"
+            android:layout_gravity="right"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
