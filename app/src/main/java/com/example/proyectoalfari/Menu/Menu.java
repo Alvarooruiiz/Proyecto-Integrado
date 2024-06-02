@@ -62,7 +62,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
 
     private FirebaseFirestore db;
 
-    private List<DishOrder> orderList;
+    private DishOrder orderList = new DishOrder();
 
 
 
@@ -73,6 +73,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         setContentView(R.layout.menu_layout);
         FirebaseApp.initializeApp(this);
         selectedDishes = new ArrayList<>();
+
 
         FirebaseApp.initializeApp(this);
 
@@ -109,17 +110,17 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         RecyclerView recyclerViewOrders = dialogView.findViewById(R.id.rvOrderList);
         Button btnPay = dialogView.findViewById(R.id.btnPay);
 
-        // Configurar RecyclerView para mostrar los pedidos
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        recyclerViewOrders.setLayoutManager(layoutManager);
-        RecyclerAdapterPaymentList orderAdapter = new RecyclerAdapterPaymentList(orderList);
+        List<Dish> allDishes = orderList.getDishListOrder();
+
+        recyclerViewOrders.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerAdapterPaymentList orderAdapter = new RecyclerAdapterPaymentList(allDishes);
         recyclerViewOrders.setAdapter(orderAdapter);
 
-        // Configurar el botón de pagar
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 simulatePaymentProcess();
+                Toast.makeText(context, "" + orderList, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,12 +137,11 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             @Override
             public void run() {
                 Toast.makeText(context, "¡Pago realizado con éxito!", Toast.LENGTH_SHORT).show();
-
             }
         }, 3000);
     }
 
-    public void showBottomSheet(){
+    public void showBottomSheet() {
         View view = getLayoutInflater().inflate(R.layout.selected_dish_list, null);
         RecyclerView recyclerView = view.findViewById(R.id.rvSelectedDishList);
         RecyclerAdapterOrderList adapter = new RecyclerAdapterOrderList(selectedDishes);
@@ -150,24 +150,26 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
 
         Button btnMakeOrder = view.findViewById(R.id.btnMakeOrder);
         TextView tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
-        double total=0;
-        for(Dish dish : selectedDishes){
+        double total = 0;
+        for (Dish dish : selectedDishes) {
             total += dish.getPrice();
         }
         tvTotalPrice.setText("Total: " + total + "€");
 
-        String  mesa = tvMesa.getText().toString();
-        DishOrder dishOrder = new DishOrder("1", mesa, selectedDishes);
+        String mesa = tvMesa.getText().toString();
+        orderList.setId("1");
+        orderList.setIdTable(mesa);
+        orderList.setDishListOrder(new ArrayList<>(selectedDishes));
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(view);
 
         btnMakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showConfirmationDialog(mesa,dishOrder);
+                showConfirmationDialog(mesa, bottomSheetDialog);
             }
         });
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-        bottomSheetDialog.setContentView(view);
 
         bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -194,37 +196,26 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         bottomSheetDialog.show();
     }
 
-    private void showConfirmationDialog(String mesa, DishOrder order) {
+    private void showConfirmationDialog(String mesa, BottomSheetDialog bottomSheetDialog) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirmar Pedido")
                 .setMessage("¿Estás seguro de que deseas realizar este pedido?")
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        saveOrderToFirestore(mesa);
-                        makeOrder(order);
+                        makeOrder();
+                        bottomSheetDialog.dismiss();
+                        selectedDishes.clear();
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
 
-    private void saveOrderToFirestore(String mesa) {
-        String orderId = db.collection("orders").document().getId();
-        DishOrder dishOrder = new DishOrder("1", mesa, selectedDishes);
-        db.collection("orders")
-                .document(orderId)
-                .set(dishOrder)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(context, "Pedido realizado con éxito", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error al realizar el pedido: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
+    public void makeOrder() {
+        if (orderList == null) {
 
-    public void makeOrder(DishOrder order){
-        orderList.add(order);
+        }
         Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
     }
 

@@ -1,5 +1,6 @@
 package com.example.proyectoalfari.Menu;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -8,26 +9,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.Model.DishOrder;
 import com.example.proyectoalfari.R;
 
+import java.util.List;
+
 public class RecyclerAdapterPaymentList extends RecyclerView.Adapter<RecyclerAdapterPaymentList.ViewHolder> {
 
-    private DishOrder dishOrder;
+    private List<Dish> dishes;
 
-    public RecyclerAdapterPaymentList(DishOrder dishOrder) {
-        this.dishOrder = dishOrder;
+
+    public RecyclerAdapterPaymentList(List<Dish> dishes) {
+        this.dishes = dishes;
     }
+
 
     @NonNull
     @Override
     public RecyclerAdapterPaymentList.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_order_pay, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapterPaymentList.ViewHolder holder, int position) {
-
+        Dish dish = dishes.get(position);
+        holder.tvDishNameOrderPay.setText(dish.getName());
+        holder.tvDishPriceOrderPay.setText(String.valueOf(dish.getPrice()));
+        holder.tvAmountDish.setText("x1");
     }
 
     @Override
