@@ -26,6 +26,15 @@ android {
             )
         }
     }
+
+    packagingOptions {
+        exclude ("META-INF/NOTICE.md")
+        exclude ("META-INF/LICENSE.md")
+        exclude ("META-INF/DEPENDENCIES")
+        exclude ("META-INF/NOTICE")
+        exclude ("META-INF/LICENSE")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +49,10 @@ dependencies {
     implementation ("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-database-ktx")
 
+    implementation ("com.sun.mail:jakarta.mail:2.0.1")
+    implementation ("com.sun.activation:jakarta.activation:2.0.1")
+
+    implementation ("com.itextpdf:itext7-core:7.1.16")
 
     implementation ("com.github.bumptech.glide:glide:4.14.2")
 
@@ -56,7 +69,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.3.0")
 
     implementation ("androidx.constraintlayout:constraintlayout:2.1.0")
-
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
 
 

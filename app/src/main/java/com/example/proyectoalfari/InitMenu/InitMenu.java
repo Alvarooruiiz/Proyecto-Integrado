@@ -1,6 +1,9 @@
 package com.example.proyectoalfari.InitMenu;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
+import com.example.proyectoalfari.Login;
 import com.example.proyectoalfari.Menu.Menu;
 import com.example.proyectoalfari.R;
+import com.example.proyectoalfari.UserSett;
+import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,14 +37,17 @@ public class InitMenu extends AppCompatActivity {
 
     private CardView cvCartaDish;
     private CardView cvTable;
-    private CardView cvCartaDrink;
-    private CardView cvUserSettings;
+
+    private RecyclerView carouselRecyclerView;
+    private PhotoCarouselAdapter adapter;
 
     private CardView cvGoogleMaps;
 
     private SQLiteGestor dbGestor;
 
     private ImageView ivQrScan;
+    private ImageView ivUserIcon;
+    private ImageView ivLogOut;
     private TextView tvTable;
 
     private String qrNumber;
@@ -50,20 +61,59 @@ public class InitMenu extends AppCompatActivity {
         setContentView(R.layout.initmenu_layout);
 
         cvCartaDish = findViewById(R.id.cvCartaDish);
-        cvCartaDrink = findViewById(R.id.cvCartaDrink);
-        cvUserSettings = findViewById(R.id.cvUserSettings);
+
         cvGoogleMaps = findViewById(R.id.cvGoogleMaps);
-        cvTable = findViewById(R.id.cvTable);
+
 
         dbGestor = new SQLiteGestor(this);
 
         ivQrScan = findViewById(R.id.ivQrScan);
-        tvTable = findViewById(R.id.tvTable);
+        ivUserIcon = findViewById(R.id.ivUserIcon);
+        ivLogOut = findViewById(R.id.ivUserLogOut);
+
+        carouselRecyclerView = findViewById(R.id.carousel_recycler_view);
+        adapter = new PhotoCarouselAdapter(this);
+        carouselRecyclerView.setAdapter(adapter);
+
+        CarouselLayoutManager layoutManager = new CarouselLayoutManager();
+        carouselRecyclerView.setLayoutManager(layoutManager);
+
+
+        ivUserIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent userSetIntent = new Intent(InitMenu.this, UserSett.class);
+                startActivity(userSetIntent);
+            }
+        });
 
         ivQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initScanner();
+            }
+        });
+
+        ivLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(InitMenu.this)
+                        .setTitle("Log Out")
+                        .setMessage("¿Estás seguro de que deseas cerrar sesión?")
+                        .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dbGestor.deleteUserLog();
+                                Toast.makeText(InitMenu.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(InitMenu.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+
             }
         });
 
@@ -77,34 +127,18 @@ public class InitMenu extends AppCompatActivity {
         });
 
 
-            cvCartaDish.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        cvCartaDish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                    if(qrExistOnDatabase()){
-                    Intent intent = new Intent(InitMenu.this, Menu.class);
-                    startActivity(intent);
+                Intent intent = new Intent(InitMenu.this, Menu.class);
+                startActivity(intent);
 //                    }else {
 //                        Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
 //                    }
-                }
-            });
-
-
-        
-        cvCartaDrink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbGestor.deleteUserLog();
-                Toast.makeText(InitMenu.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
             }
         });
 
-        cvUserSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                qrExistOnDatabase();
-            }
-        });
     }
 
     private void initScanner() {
@@ -129,7 +163,8 @@ public class InitMenu extends AppCompatActivity {
                 try {
                     qrNumber = qrContent;
                     qrExistOnDatabase();
-                    if(!qrExistOnDatabase()) Toast.makeText(this, "Mesa no encontrada", Toast.LENGTH_SHORT).show();
+                    if (!qrExistOnDatabase())
+                        Toast.makeText(this, "Mesa no encontrada", Toast.LENGTH_SHORT).show();
                 } catch (NumberFormatException e) {
                     Toast.makeText(this, "El código QR no es un número válido", Toast.LENGTH_LONG).show();
                 }
@@ -139,17 +174,17 @@ public class InitMenu extends AppCompatActivity {
         }
     }
 
-    public Boolean qrExistOnDatabase(){
+    public Boolean qrExistOnDatabase() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
-                    if(tableSnapshot.child("numQR").getValue(String.class).equals(qrNumber)){
+                    if (tableSnapshot.child("numQR").getValue(String.class).equals(qrNumber)) {
                         ivQrScan.setVisibility(View.GONE);
                         tvTable.setText("Mesa: " + qrNumber);
                         cvTable.setVisibility(View.VISIBLE);
-                        qrExist= true;
+                        qrExist = true;
                         break;
                     }
                 }
