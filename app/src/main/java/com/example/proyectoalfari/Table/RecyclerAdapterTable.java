@@ -44,7 +44,7 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
         if(table.getStatus()==null){
             table.setStatus(false);
         }
-        if (table.getStatus().equals("true")) {
+        if (table.getStatus().equals(true)) {
             holder.cvMesa.setCardBackgroundColor(Color.WHITE);
             holder.tvTableStatus.setText("Ocupado");
 

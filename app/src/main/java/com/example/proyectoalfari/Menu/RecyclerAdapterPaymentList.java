@@ -19,11 +19,9 @@ public class RecyclerAdapterPaymentList extends RecyclerView.Adapter<RecyclerAda
 
     private List<Dish> dishes;
 
-
     public RecyclerAdapterPaymentList(List<Dish> dishes) {
         this.dishes = dishes;
     }
-
 
     @NonNull
     @Override
@@ -37,26 +35,22 @@ public class RecyclerAdapterPaymentList extends RecyclerView.Adapter<RecyclerAda
         Dish dish = dishes.get(position);
         holder.tvDishNameOrderPay.setText(dish.getName());
         holder.tvDishPriceOrderPay.setText(String.valueOf(dish.getPrice()));
-        holder.tvAmountDish.setText("x1");
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dishes.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-    private TextView tvDishNameOrderPay;
-    private TextView tvDishPriceOrderPay;
-    private TextView tvAmountDish;
-
-
+        private TextView tvDishNameOrderPay;
+        private TextView tvDishPriceOrderPay;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDishNameOrderPay = itemView.findViewById(R.id.tvDishNameOrderPay);
             tvDishPriceOrderPay = itemView.findViewById(R.id.tvDishPriceOrderPay);
-            tvAmountDish = itemView.findViewById(R.id.tvAmountDish);
         }
     }
 }

@@ -19,11 +19,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.proyectoalfari.Controlador.Controlador;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Login;
 import com.example.proyectoalfari.Menu.Menu;
+import com.example.proyectoalfari.Model.Table;
 import com.example.proyectoalfari.R;
-import com.example.proyectoalfari.UserSett;
+import com.example.proyectoalfari.User.UserSett;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +66,7 @@ public class InitMenu extends AppCompatActivity {
 
         cvGoogleMaps = findViewById(R.id.cvGoogleMaps);
 
+        tvTable = findViewById(R.id.tvTable);
 
         dbGestor = new SQLiteGestor(this);
 
@@ -130,12 +133,16 @@ public class InitMenu extends AppCompatActivity {
         cvCartaDish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                    if(qrExistOnDatabase()){
-                Intent intent = new Intent(InitMenu.this, Menu.class);
-                startActivity(intent);
-//                    }else {
-//                        Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
-//                    }
+                qrExistOnDatabase(new QRExistCallback() {
+                    @Override
+                    public void onQRExist(boolean exist) {
+                        if (exist) {
+                            updateTableStatusAndNavigate();
+                        } else {
+                            Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -144,7 +151,7 @@ public class InitMenu extends AppCompatActivity {
     private void initScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setOrientationLocked(false);
+        integrator.setOrientationLocked(true);
         integrator.setTorchEnabled(false);
         integrator.setBeepEnabled(true);
         integrator.initiateScan();
@@ -162,9 +169,14 @@ public class InitMenu extends AppCompatActivity {
                 String qrContent = result.getContents();
                 try {
                     qrNumber = qrContent;
-                    qrExistOnDatabase();
-                    if (!qrExistOnDatabase())
-                        Toast.makeText(this, "Mesa no encontrada", Toast.LENGTH_SHORT).show();
+                    qrExistOnDatabase(new QRExistCallback() {
+                        @Override
+                        public void onQRExist(boolean exist) {
+                            if (!exist) {
+                                Toast.makeText(InitMenu.this, "Mesa no encontrada", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 } catch (NumberFormatException e) {
                     Toast.makeText(this, "El código QR no es un número válido", Toast.LENGTH_LONG).show();
                 }
@@ -174,28 +186,73 @@ public class InitMenu extends AppCompatActivity {
         }
     }
 
-    public Boolean qrExistOnDatabase() {
+    private void qrExistOnDatabase(QRExistCallback callback) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
-                    if (tableSnapshot.child("numQR").getValue(String.class).equals(qrNumber)) {
-                        ivQrScan.setVisibility(View.GONE);
-                        tvTable.setText("Mesa: " + qrNumber);
-                        cvTable.setVisibility(View.VISIBLE);
-                        qrExist = true;
-                        break;
+                    Table table = tableSnapshot.getValue(Table.class);
+                    if (table.getNumQR().equals(qrNumber)) {
+                        String userLoged = Controlador.getMiController().getUser().getUserName();
+                        if (table.getStatus()) {
+                            if (userLoged.equals(table.getUserName())) {
+                                proceedWithExistingUser(table);
+                                callback.onQRExist(true);
+                                return;
+                            } else {
+                                Toast.makeText(InitMenu.this, "Mesa ocupada por otro usuario", Toast.LENGTH_SHORT).show();
+                                callback.onQRExist(false);
+                                return;
+                            }
+                        } else {
+                            tableSnapshot.getRef().child("userName").setValue(userLoged);
+                            tableSnapshot.getRef().child("status").setValue(true);
+                            proceedWithExistingUser(table);
+                            callback.onQRExist(true);
+                            return;
+                        }
                     }
                 }
+                callback.onQRExist(false);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(InitMenu.this, "Error al cargar mesas", Toast.LENGTH_SHORT).show();
+                callback.onQRExist(false);
             }
         });
-        return qrExist;
+    }
+
+    private void proceedWithExistingUser(Table table) {
+        ivQrScan.setVisibility(View.GONE);
+        tvTable.setText("Mesa: " + qrNumber);
+        tvTable.setVisibility(View.VISIBLE);
+        qrExist = true;
+    }
+
+    private void updateTableStatusAndNavigate() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
+        databaseReference.orderByChild("numQR").equalTo(qrNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
+                    tableSnapshot.getRef().child("status").setValue(true);
+                    Intent intent = new Intent(InitMenu.this, Menu.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(InitMenu.this, "Error al actualizar el estado de la mesa", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private interface QRExistCallback {
+        void onQRExist(boolean exist);
     }
 
 }

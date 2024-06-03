@@ -5,8 +5,8 @@ import java.util.List;
 public class Table {
     private String id;
     private String numQR;
-
     private Boolean status;
+    private String userName;
 
     public Table() {
     }
@@ -15,6 +15,7 @@ public class Table {
         this.id = id;
         this.numQR = numQR;
         this.status = false;
+        this.userName = null;
     }
 
     public String getId() {
@@ -41,5 +42,11 @@ public class Table {
         this.status = status;
     }
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.proyectoalfari.Menu;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.GestorEmail.CrearPDF;
+import com.example.proyectoalfari.GestorEmail.GestorEmail;
+import com.example.proyectoalfari.GestorEmail.SendEmailTask;
+import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.Model.DishOrder;
 import com.example.proyectoalfari.R;
@@ -43,29 +50,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.w3c.dom.Text;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import jakarta.mail.MessagingException;
 
 public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSelectedListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private MenuPagerAdapter menuPagerAdapter;
-
     private ImageView ivShopIcon;
     private Button btnVerOrder;
     private TextView tvMesa;
-
     private List<Dish> selectedDishes;
-
     public Context context;
-
     private FirebaseFirestore db;
-
-    private DishOrder orderList = new DishOrder();
-
-
-
+    private List<DishOrder> orders = new ArrayList<>();
+    private AlertDialog currentDialog;
+    private BottomSheetDialog currentBottomSheetDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,12 +82,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         setContentView(R.layout.menu_layout);
         FirebaseApp.initializeApp(this);
         selectedDishes = new ArrayList<>();
-
-
-        FirebaseApp.initializeApp(this);
-
         db = FirebaseFirestore.getInstance();
-
         context = this;
 
         tvMesa = findViewById(R.id.tvMesa);
@@ -91,11 +95,11 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         tabLayout.setupWithViewPager(viewPager);
 
         btnVerOrder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showBottomSheet();
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                showBottomSheet();
+            }
+        });
 
         ivShopIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,41 +109,120 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (currentDialog != null && currentDialog.isShowing()) {
+            currentDialog.dismiss();
+        }
+        if (currentBottomSheetDialog != null && currentBottomSheetDialog.isShowing()) {
+            currentBottomSheetDialog.dismiss();
+        }
+    }
+
     private void showOrdersDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.layout_dialog_order, null);
         RecyclerView recyclerViewOrders = dialogView.findViewById(R.id.rvOrderList);
         Button btnPay = dialogView.findViewById(R.id.btnPay);
+        TextView tvTotalPrice = dialogView.findViewById(R.id.tvTotalPrice);
+        double total = 0;
 
-        List<Dish> allDishes = orderList.getDishListOrder();
+        List<Dish> allDishes = new ArrayList<>();
+        for (DishOrder order : orders) {
+            allDishes.addAll(order.getDishListOrder());
+        }
+
+        for (Dish d : allDishes) {
+            total += d.getPrice();
+        }
+
+        tvTotalPrice.setText(total + "€ ");
 
         recyclerViewOrders.setLayoutManager(new LinearLayoutManager(this));
         RecyclerAdapterPaymentList orderAdapter = new RecyclerAdapterPaymentList(allDishes);
         recyclerViewOrders.setAdapter(orderAdapter);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        currentDialog = builder.create();
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                simulatePaymentProcess();
-                Toast.makeText(context, "" + orderList, Toast.LENGTH_SHORT).show();
+                showConfirmationDialog2();
+                currentDialog.dismiss();
             }
         });
+        currentDialog.show();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                orderAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
-    private void simulatePaymentProcess() {
+    private void simulatePaymentProcess() throws MessagingException, IOException {
+        String filePath = context.getExternalFilesDir(null) + "/factura.pdf";
+        try {
+            List<Dish> allDishes = new ArrayList<>();
+            for (DishOrder order : orders) {
+                allDishes.addAll(order.getDishListOrder());
+            }
+            CrearPDF.createInvoice(filePath, allDishes);
+            sendEmail("mensaje", filePath);
+            Log.e("ASDASD", "Correctyo");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+//        String mensaje = crearFactura();
+//        sendEmail(mensaje);
+        proceedWithPayment();
+    }
+
+    private void sendEmail(String mensaje, String path) {
+        String emailEmisor = "alvaro.ruiz.enrique@gmail.com";  // Cuenta Gmail completa de emisor
+        String passwordEmisor = "likt hjet gkav gteb";
+        new SendEmailTask(emailEmisor, passwordEmisor, mensaje, path).execute();
+    }
+
+    private void proceedWithPayment() {
         Toast.makeText(context, "Procesando pago...", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "La factura se está enviando al correo", Toast.LENGTH_SHORT).show();
+            }
+        }, 2000);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(context, "¡Pago realizado con éxito!", Toast.LENGTH_SHORT).show();
+                resetTableUserName();
+                orders.clear();
             }
         }, 3000);
     }
+
+    private void resetTableUserName() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
+        databaseReference.orderByChild("numQR").equalTo("111").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
+                    tableSnapshot.getRef().child("userName").setValue(null);
+                    tableSnapshot.getRef().child("status").setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Menu.this, "Error al actualizar el estado de la mesa", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     public void showBottomSheet() {
         View view = getLayoutInflater().inflate(R.layout.selected_dish_list, null);
@@ -157,21 +240,22 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         tvTotalPrice.setText("Total: " + total + "€");
 
         String mesa = tvMesa.getText().toString();
-        orderList.setId("1");
-        orderList.setIdTable(mesa);
-        orderList.setDishListOrder(new ArrayList<>(selectedDishes));
+        DishOrder newOrder = new DishOrder();
+        newOrder.setId(String.valueOf(orders.size() + 1));
+        newOrder.setIdTable(mesa);
+        newOrder.setDishListOrder(new ArrayList<>(selectedDishes));
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-        bottomSheetDialog.setContentView(view);
+        currentBottomSheetDialog = new BottomSheetDialog(context);
+        currentBottomSheetDialog.setContentView(view);
 
         btnMakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showConfirmationDialog(mesa, bottomSheetDialog);
+                showConfirmationDialog(newOrder, currentBottomSheetDialog);
             }
         });
 
-        bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        currentBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
@@ -193,17 +277,17 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             }
         });
 
-        bottomSheetDialog.show();
+        currentBottomSheetDialog.show();
     }
 
-    private void showConfirmationDialog(String mesa, BottomSheetDialog bottomSheetDialog) {
+    private void showConfirmationDialog(DishOrder newOrder, BottomSheetDialog bottomSheetDialog) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirmar Pedido")
                 .setMessage("¿Estás seguro de que deseas realizar este pedido?")
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        makeOrder();
+                        makeOrder(newOrder);
                         bottomSheetDialog.dismiss();
                         selectedDishes.clear();
                     }
@@ -212,11 +296,36 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                 .show();
     }
 
-    public void makeOrder() {
-        if (orderList == null) {
+    private void showConfirmationDialog2() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmar Pago")
+                .setMessage("¿Estás seguro de que deseas realizar el pago? Concluirá la comida de la mesa")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            simulatePaymentProcess();
+                        } catch (MessagingException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
 
+                        selectedDishes.clear();
+                        Intent intent = new Intent(Menu.this, InitMenu.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    public void makeOrder(DishOrder newOrder) {
+        if (newOrder != null) {
+            orders.add(newOrder);
+            Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -247,6 +356,22 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     @Override
     public void onDishSelected(Dish dish) {
         selectedDishes.add(dish);
-        Toast.makeText(this, "Plato añadido al carrito"  + selectedDishes.size(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Plato añadido al carrito" + selectedDishes.size(), Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmar salida")
+                .setMessage("¿Estás seguro de que deseas volver atrás? Los cambios se perderán.")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Menu.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

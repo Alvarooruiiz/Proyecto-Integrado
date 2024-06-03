@@ -8,16 +8,25 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectoalfari.Admin.Admin;
+import com.example.proyectoalfari.Controlador.Controlador;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Dish.CreateDish;
 import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Menu.Menu;
+import com.example.proyectoalfari.Model.Dish;
+import com.example.proyectoalfari.Model.User;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
 
@@ -35,6 +44,9 @@ public class Login extends AppCompatActivity {
 
     private SQLiteGestor dbGestor;
     private CheckBox cbUserLog;
+    private User userloged;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +65,9 @@ public class Login extends AppCompatActivity {
 
         cbUserLog = findViewById(R.id.cbUserLog);
         dbGestor = new SQLiteGestor(this);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("User");
+
 
 
         btnRegisterLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,16 +89,19 @@ public class Login extends AppCompatActivity {
                 database.checkUserCredentials(userLog, passLog, new AlfariDatabase.OnLoginResultListener() {
                     @Override
                     public void onLoginSuccess() {
+                        if(cbUserLog.isChecked()){
+                            dbGestor.addUserLog(userLog);
+                        }
+
                         if(userLog.equals("admin") && passLog.equals("admin")){
                             Intent intentAdmin = new Intent(Login.this, Admin.class);
                             startActivity(intentAdmin);
                         }else{
                             Intent intentMenu = new Intent(Login.this, InitMenu.class);
+                            loadUserFromFirebase(userLog);
                             startActivity(intentMenu);
                         }
-                        if(cbUserLog.isChecked()){
-                            dbGestor.addUserLog(userLog);
-                        }
+
 
                     }
                     @Override
@@ -91,6 +109,27 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(Login.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+    }
+
+    private void loadUserFromFirebase(String userLog) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    if(userSnapshot.child("userName").getValue(String.class).equals(userLog)){
+                        userloged = userSnapshot.getValue(User.class);
+                        Controlador.getMiController().setUser(userloged);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
     }

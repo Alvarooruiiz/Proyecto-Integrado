@@ -37,14 +37,12 @@
         </activity>
         <activity android:name=".Login"/>
         <activity android:name=".InitMenu.InitMenu"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".Admin.Admin"/>
         <activity android:name=".Admin.UserList"/>
         <activity android:name=".Table.TableList"/>
         <activity android:name=".Dish.EditDish.EditDish"/>
-
-
+        <activity android:name=".User.UserSett"/>
 
     </application>
 
