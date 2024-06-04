@@ -1,30 +1,40 @@
 package com.example.proyectoalfari.Table;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoalfari.Menu.RecyclerAdapterOrderList;
+import com.example.proyectoalfari.Model.Order;
 import com.example.proyectoalfari.Model.Table;
 import com.example.proyectoalfari.Order.RecyclerAdapterOrderAdmin;
 import com.example.proyectoalfari.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTable.ViewHolder>{
+public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTable.ViewHolder> {
 
     private List<Table> listTable;
 
@@ -43,29 +53,68 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
     public void onBindViewHolder(@NonNull RecyclerAdapterTable.ViewHolder holder, int position) {
         Table table = listTable.get(position);
         holder.tvTableNumber.setText("Mesa: " + table.getNumQR());
-        if(table.getStatus()==null){
+        if (table.getStatus() == null) {
             table.setStatus(false);
         }
         if (table.getStatus().equals(true)) {
             holder.cvMesa.setCardBackgroundColor(Color.WHITE);
             holder.tvTableStatus.setText("Ocupado");
-
         } else {
             holder.cvMesa.setCardBackgroundColor(Color.GREEN);
             holder.tvTableStatus.setText("Libre");
         }
         generateQRCode(table.getNumQR(), holder.ivQrImage);
 
+        if(table.getStatus().equals(true)) {
+            holder.btnSeeOrder.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnSeeOrder.setVisibility(View.GONE);
+        }
+
         holder.btnSeeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(table.getStatus().equals("true")){
-                    v = LayoutInflater.from(v.getContext()).inflate(R.layout.order_admin_layout, null);
-                    RecyclerView rvAdapterOrderAdmin = v.findViewById(R.id.rvOrderAmind);
-                    RecyclerAdapterOrderAdmin adapter = new RecyclerAdapterOrderAdmin();
-                }
+                showOrderDetailDialog(v, table.getNumQR());
             }
         });
+    }
+
+    private void showOrderDetailDialog(View v, String tableQR) {
+        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+        View dialogView = inflater.inflate(R.layout.order_admin_layout, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setView(dialogView);
+        TextView tvAdminTitle = dialogView.findViewById(R.id.tvAdminTitle);
+        tvAdminTitle.setText("Pedidos de la mesa " + tableQR);
+
+        RecyclerView recyclerViewOrders = dialogView.findViewById(R.id.rvOrderAmind);
+        recyclerViewOrders.setLayoutManager(new LinearLayoutManager(v.getContext()));
+        List<Order> orderList = new ArrayList<>();
+
+        RecyclerAdapterOrderAdmin adapter = new RecyclerAdapterOrderAdmin(orderList);
+        recyclerViewOrders.setAdapter(adapter);
+
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("Orders");
+        ordersRef.orderByChild("tableQR").equalTo(tableQR).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
+                    Order order = orderSnapshot.getValue(Order.class);
+                    if (order != null) {
+                        orderList.add(order);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(v.getContext(), "Error al recuperar los pedidos", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.show();
     }
 
     @Override
@@ -97,6 +146,7 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
         private TextView tvTableStatus;
         private ImageView ivQrImage;
         private Button btnSeeOrder;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cvMesa = itemView.findViewById(R.id.cvMesa);

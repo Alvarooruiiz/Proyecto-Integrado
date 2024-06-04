@@ -35,6 +35,7 @@ import com.example.proyectoalfari.GestorEmail.SendEmailTask;
 import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.Model.DishOrder;
+import com.example.proyectoalfari.Model.Order;
 import com.example.proyectoalfari.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -51,6 +52,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.mail.MessagingException;
 
@@ -211,10 +213,38 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                 resetTableUserName();
                 sqliteGestor.deleteDishes();
                 orders.clear();
+                deleteOrdersFromFirebase();
             }
         }, 3000);
     }
 
+    private void deleteOrdersFromFirebase() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Orders");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                    Order order = orderSnapshot.getValue(Order.class);
+                    if (order != null && order.getTableQR().equals(ControladorTable.getMiController().getQrTable())) {
+                        orderSnapshot.getRef().removeValue()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Log.d("Firebase", "Order deleted successfully");
+                                    } else {
+                                        Log.e("Firebase", "Error deleting order", task.getException());
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Menu.this, "Error al eliminar los pedidos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void resetTableUserName() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tables");
         databaseReference.orderByChild("numQR").equalTo("111").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -335,10 +365,27 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         if (newOrder != null) {
             orders.add(newOrder);
 
-//            Order order = new Order();
-//            order.setIdOrder(UUID.randomUUID().toString());
-//            order.setTableQR(ControladorTable.getMiController().getQrTable());
+            String orderId = UUID.randomUUID().toString();
+            String tableQR = ControladorTable.getMiController().getQrTable();
 
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Orders");
+
+            for (Dish dish : selectedDishes) {
+                Order order = new Order();
+                order.setIdOrder(orderId);
+                order.setTableQR(tableQR);
+                order.setDishName(dish.getName());
+                order.setReady(false);
+
+                databaseReference.child(orderId).setValue(order)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("Firebase", "Order saved successfully");
+                            } else {
+                                Log.e("Firebase", "Error saving order", task.getException());
+                            }
+                        });
+            }
 
             selectedDishes.clear();
             Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();

@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#dfba69">
 
     <TextView
-        android:id="@+id/order_admin_title"
+        android:id="@+id/tvAdminTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Comandas mesa: 1"
@@ -14,14 +15,18 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#3e4147"
+        android:layout_margin="10dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvOrderAmind"
-        app:layout_constraintTop_toBottomOf="@+id/order_admin_title"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"/>
+        android:layout_margin="20dp"
+        tools:listitem="@layout/recycler_order_admin"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

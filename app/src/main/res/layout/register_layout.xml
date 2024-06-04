@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fffedf"
+    >
     <TextView
         android:id="@+id/tvTittle"
         android:layout_width="wrap_content"
@@ -16,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.109"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="#3e4147"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUserReg"
@@ -28,7 +31,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.250" >
+        app:layout_constraintVertical_bias="0.250"
+        android:layout_margin="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -46,7 +50,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.343"  >
+        app:layout_constraintVertical_bias="0.343"
+        android:layout_margin="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +71,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.436"
-        android:hint="Introduzca la contraseña">
+        android:hint="Introduzca la contraseña"
+        android:layout_margin="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +89,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.526"
-        android:hint="Repita la contraseña">
+        android:hint="Repita la contraseña"
+        android:layout_margin="10dp">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,12 +118,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Registarse"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.844" />
+        app:layout_constraintVertical_bias="0.844"
+        android:backgroundTint="#5a2e2e"
+        android:layout_margin="20dp"/>
 
     <Button
         android:id="@+id/btnLoginLayout"
@@ -124,12 +134,14 @@
         android:layout_width="127dp"
         android:layout_height="52dp"
         android:text="Login"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.845"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.947" />
+        app:layout_constraintVertical_bias="0.947"
+        android:backgroundTint="#5a2e2e"/>
 
     <TextView
         android:id="@+id/tvYaTeHasReg"

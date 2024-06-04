@@ -3,16 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:background="#fffedf">
 
     <TextView
-        android:id="@+id/order_admin_title"
+        android:id="@+id/tvNameDishOrderAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shushi"
+        android:text="Sushi"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

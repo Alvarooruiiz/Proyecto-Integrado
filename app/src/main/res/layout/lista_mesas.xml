@@ -2,7 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#fffedf">
 
     <Button
         android:id="@+id/btnAddTable"
@@ -11,7 +13,8 @@
         android:text="Agregar  Mesa"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:backgroundTint="#5a2e2e"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTableList"
@@ -19,6 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/btnAddTable"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/cardview_table_list"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

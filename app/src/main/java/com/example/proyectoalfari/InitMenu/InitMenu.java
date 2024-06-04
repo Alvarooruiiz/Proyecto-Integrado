@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoalfari.Controlador.ControladorTable;
 import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Login;
@@ -236,6 +237,7 @@ public class InitMenu extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
                     tableSnapshot.getRef().child("status").setValue(true);
+                    ControladorTable.getMiController().setQrTable(qrNumber);
                     Intent intent = new Intent(InitMenu.this, Menu.class);
                     startActivity(intent);
                 }

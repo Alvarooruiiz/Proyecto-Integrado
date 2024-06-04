@@ -8,7 +8,7 @@
 
     android:id="@+id/main"
     tools:context=".Login"
-    android:background="#FFFFFF">
+    android:background="#fffedf">
 
 
     <TextView
@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:textSize="30sp"
+        android:textColor="#3e4147"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -77,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -87,7 +89,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="#353535"/>
+        android:backgroundTint="#5a2e2e"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,13 +108,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Registrarse"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.745"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.778"
-        android:backgroundTint="#353535"/>
+        android:backgroundTint="#5a2e2e"/>
 
     <CheckBox
         android:id="@+id/cbUserLog"

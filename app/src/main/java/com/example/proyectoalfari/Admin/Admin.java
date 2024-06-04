@@ -57,8 +57,6 @@ public class Admin extends AppCompatActivity {
         cvAddPlate = findViewById(R.id.cvAddPlate);
         cvEditPlate = findViewById(R.id.cvEditPlate);
         cvUserList = findViewById(R.id.cvUserList);
-        cvAddPhoto = findViewById(R.id.cvAddPhoto);
-        cvChangeLocation = findViewById(R.id.cvChangeLocation);
         cvAddTable = findViewById(R.id.cvAddTable);
 
         dbGestor = new SQLiteGestor(this);
@@ -95,12 +93,7 @@ public class Admin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        cvChangeLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
 
         cvAddTable.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="16dp"
     android:visibility="visible"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="15dp"
+    android:backgroundTint="#dfba69">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -150,7 +151,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20px"
-            android:text="Editar plato"/>
+            android:text="Editar plato"
+            android:backgroundTint="#5a2e2e"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
