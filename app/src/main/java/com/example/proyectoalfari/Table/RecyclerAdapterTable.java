@@ -105,7 +105,12 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
                         orderList.add(order);
                     }
                 }
-                adapter.notifyDataSetChanged();
+                if (orderList.isEmpty()) {
+                    Toast.makeText(v.getContext(), "Aun no se ha realizado el pedido", Toast.LENGTH_SHORT).show();
+                } else {
+                    adapter.notifyDataSetChanged();
+                    builder.show();
+                }
             }
 
             @Override
@@ -113,8 +118,6 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
                 Toast.makeText(v.getContext(), "Error al recuperar los pedidos", Toast.LENGTH_SHORT).show();
             }
         });
-
-        builder.show();
     }
 
     @Override

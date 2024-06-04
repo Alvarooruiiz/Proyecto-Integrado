@@ -365,12 +365,13 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         if (newOrder != null) {
             orders.add(newOrder);
 
-            String orderId = UUID.randomUUID().toString();
+
             String tableQR = ControladorTable.getMiController().getQrTable();
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Orders");
 
             for (Dish dish : selectedDishes) {
+                String orderId = UUID.randomUUID().toString();
                 Order order = new Order();
                 order.setIdOrder(orderId);
                 order.setTableQR(tableQR);

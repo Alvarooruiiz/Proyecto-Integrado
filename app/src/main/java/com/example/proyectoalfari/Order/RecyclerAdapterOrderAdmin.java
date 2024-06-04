@@ -1,5 +1,6 @@
 package com.example.proyectoalfari.Order;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,17 @@ public class RecyclerAdapterOrderAdmin  extends RecyclerView.Adapter<RecyclerAda
         Order order = orderList.get(position);
         holder.tvNameDishOrderAdmin.setText(order.getDishName());
         holder.cbIsReady.setChecked(order.isReady());
-
+        if (holder.cbIsReady.isChecked()) {
+            holder.tvNameDishOrderAdmin.setPaintFlags(holder.tvNameDishOrderAdmin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.tvNameDishOrderAdmin.setPaintFlags(holder.tvNameDishOrderAdmin.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
         holder.cbIsReady.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                holder.tvNameDishOrderAdmin.setPaintFlags(holder.tvNameDishOrderAdmin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                holder.tvNameDishOrderAdmin.setPaintFlags(holder.tvNameDishOrderAdmin.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
             DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Orders").child(order.getIdOrder());
             orderRef.child("ready").setValue(isChecked);
         });
