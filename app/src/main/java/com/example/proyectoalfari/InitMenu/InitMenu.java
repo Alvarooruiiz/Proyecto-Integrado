@@ -2,7 +2,6 @@ package com.example.proyectoalfari.InitMenu;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,12 +13,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.Login;
 import com.example.proyectoalfari.Menu.Menu;
@@ -194,7 +191,7 @@ public class InitMenu extends AppCompatActivity {
                 for (DataSnapshot tableSnapshot : snapshot.getChildren()) {
                     Table table = tableSnapshot.getValue(Table.class);
                     if (table.getNumQR().equals(qrNumber)) {
-                        String userLoged = Controlador.getMiController().getUser().getUserName();
+                        String userLoged = ControladorUser.getMiController().getUser().getUserName();
                         if (table.getStatus()) {
                             if (userLoged.equals(table.getUserName())) {
                                 proceedWithExistingUser(table);

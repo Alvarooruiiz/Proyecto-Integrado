@@ -15,7 +15,7 @@ import com.google.android.material.carousel.MaskableFrameLayout;
 public class PhotoCarouselAdapter extends RecyclerView.Adapter<PhotoCarouselAdapter.PhotoViewHolder>  {
 
     private Context context;
-    private int[] photoList = {R.drawable.card_cocteles, R.drawable.slide3, R.drawable.slide2};
+    private int[] photoList = {R.drawable.oferta, R.drawable.oferta2, R.drawable.oferta3};
 
     public PhotoCarouselAdapter(Context context) {
         this.context = context;

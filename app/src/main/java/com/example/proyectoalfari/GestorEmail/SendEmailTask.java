@@ -2,9 +2,8 @@ package com.example.proyectoalfari.GestorEmail;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorUser;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class SendEmailTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             GestorEmail email = new GestorEmail();
-            email.enviarMensajeConAdjunto(emailEmisor, Controlador.getMiController().getUser().getEmail(), "Factura", mensaje, emailEmisor, passwordEmisor,path);
+            email.enviarMensajeConAdjunto(emailEmisor, ControladorUser.getMiController().getUser().getEmail(), "Factura", mensaje, emailEmisor, passwordEmisor,path);
             return true;
         } catch (MessagingException | IOException e) {
             e.printStackTrace();

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Login;
@@ -57,7 +57,7 @@ public class SplashScreen extends AppCompatActivity {
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         userLoged = userSnapshot.getValue(User.class);
                     }
-                    Controlador.getMiController().setUser(userLoged);
+                    ControladorUser.getMiController().setUser(userLoged);
                     navigateToInitMenu();
                 } else {
                     navigateToLogin();

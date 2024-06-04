@@ -3,27 +3,19 @@ package com.example.proyectoalfari.User;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
-import com.example.proyectoalfari.Menu.Menu;
-import com.example.proyectoalfari.Model.Dish;
 import com.example.proyectoalfari.Model.User;
 import com.example.proyectoalfari.R;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class UserSett extends AppCompatActivity {
     private TextInputLayout tilUserRegSett;
@@ -44,7 +36,7 @@ public class UserSett extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_settings_layout);
 
-        User userLoged = Controlador.getMiController().getUser();
+        User userLoged = ControladorUser.getMiController().getUser();
 
 
         tilUserRegSett = findViewById(R.id.tilUserRegSett);

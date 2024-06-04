@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#757575">
+    android:background="#fffedf">
 
     <LinearLayout
         android:id="@+id/lltop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+
         android:orientation="horizontal"
         android:weightSum="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#757575"
+
         >
 
 
@@ -25,13 +25,15 @@
             android:layout_width="70dp"
             android:layout_height="57dp"
             android:layout_weight="1"
-            android:src="@drawable/user_icon_black" />
+            android:src="@drawable/user_icon_black"
+            android:layout_marginTop="20dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
             <ImageView
                 android:id="@+id/ivQrScan"
                 android:layout_width="88dp"
@@ -58,27 +60,29 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:src="@drawable/log_out_icon"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="20dp"
+            />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/carousel_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="196dp"
+        android:layout_height="240dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@+id/lltop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        tools:listitem="@layout/carousel_layout"/>
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCartaDish"
         android:layout_width="360dp"
         android:layout_height="190dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="6dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,8 +92,8 @@
         <ImageView
             android:id="@+id/ivCartaDish"
             android:layout_width="360dp"
-            android:layout_height="220dp"
-            android:src="@drawable/card_comida"
+            android:layout_height="217dp"
+            android:src="@drawable/image_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -103,7 +107,7 @@
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="6dp"

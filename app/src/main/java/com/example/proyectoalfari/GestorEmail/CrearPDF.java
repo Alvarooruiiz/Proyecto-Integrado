@@ -1,10 +1,7 @@
 package com.example.proyectoalfari.GestorEmail;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.Model.Dish;
-import com.example.proyectoalfari.Model.User;
-import com.itextpdf.kernel.colors.Color;
-import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -31,8 +28,8 @@ public class CrearPDF {
                 .setMarginBottom(20);
         document.add(title);
 
-        document.add(new Paragraph("Nombre: " + Controlador.getMiController().getUser().getUserName()));
-        document.add(new Paragraph("Email: " + Controlador.getMiController().getUser().getEmail()));
+        document.add(new Paragraph("Nombre: " + ControladorUser.getMiController().getUser().getUserName()));
+        document.add(new Paragraph("Email: " + ControladorUser.getMiController().getUser().getEmail()));
         document.add(new Paragraph("Fecha de hoy: " + formattedDate));
         document.add(new Paragraph("\n"));
 

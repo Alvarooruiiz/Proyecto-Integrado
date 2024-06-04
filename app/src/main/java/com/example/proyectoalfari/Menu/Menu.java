@@ -24,14 +24,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.proyectoalfari.Controlador.Controlador;
+import com.example.proyectoalfari.Controlador.ControladorTable;
+import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
 import com.example.proyectoalfari.GestorEmail.CrearPDF;
-import com.example.proyectoalfari.GestorEmail.GestorEmail;
 import com.example.proyectoalfari.GestorEmail.SendEmailTask;
 import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Model.Dish;
@@ -47,16 +46,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.mail.MessagingException;
@@ -72,6 +65,8 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     private List<Dish> selectedDishes;
     public Context context;
     private FirebaseFirestore db;
+    private SQLiteGestor sqliteGestor;
+
     private List<DishOrder> orders = new ArrayList<>();
     private AlertDialog currentDialog;
     private BottomSheetDialog currentBottomSheetDialog;
@@ -80,16 +75,34 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
+        context = this;
         FirebaseApp.initializeApp(this);
         selectedDishes = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-        context = this;
+
+
+        sqliteGestor = new SQLiteGestor(this);
+
+        List<Dish> listaDatabase = sqliteGestor.getDishes();
+
+        if(listaDatabase!=null){
+            selectedDishes.addAll(listaDatabase);
+            DishOrder newOrder = new DishOrder();
+            newOrder.setId(String.valueOf(orders.size() + 1));
+            newOrder.setIdTable(ControladorTable.getMiController().getQrTable());
+            newOrder.setDishListOrder(new ArrayList<>(selectedDishes));
+            makeOrder(newOrder);
+        }
+
+
 
         tvMesa = findViewById(R.id.tvMesa);
         tabLayout = findViewById(R.id.tabMenu);
         viewPager = findViewById(R.id.viewPager);
         ivShopIcon = findViewById(R.id.ivShopIcon);
         btnVerOrder = findViewById(R.id.btnVerOrder);
+
+        tvMesa.setText("Mesa: " + ControladorTable.getMiController().getQrTable());
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -170,18 +183,16 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                 allDishes.addAll(order.getDishListOrder());
             }
             CrearPDF.createInvoice(filePath, allDishes);
-            sendEmail("mensaje", filePath);
+            sendEmail("Factura comida en Alfari", filePath);
             Log.e("ASDASD", "Correctyo");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-//        String mensaje = crearFactura();
-//        sendEmail(mensaje);
         proceedWithPayment();
     }
 
     private void sendEmail(String mensaje, String path) {
-        String emailEmisor = "alvaro.ruiz.enrique@gmail.com";  // Cuenta Gmail completa de emisor
+        String emailEmisor = "alvaro.ruiz.enrique@gmail.com";
         String passwordEmisor = "likt hjet gkav gteb";
         new SendEmailTask(emailEmisor, passwordEmisor, mensaje, path).execute();
     }
@@ -200,6 +211,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             public void run() {
                 Toast.makeText(context, "¡Pago realizado con éxito!", Toast.LENGTH_SHORT).show();
                 resetTableUserName();
+                sqliteGestor.deleteDishes();
                 orders.clear();
             }
         }, 3000);
@@ -287,9 +299,10 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        sqliteGestor.addDishes(selectedDishes);
                         makeOrder(newOrder);
                         bottomSheetDialog.dismiss();
-                        selectedDishes.clear();
+
                     }
                 })
                 .setNegativeButton("No", null)
@@ -311,7 +324,6 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
                             throw new RuntimeException(e);
                         }
 
-                        selectedDishes.clear();
                         Intent intent = new Intent(Menu.this, InitMenu.class);
                         startActivity(intent);
                         finish();
@@ -324,6 +336,12 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     public void makeOrder(DishOrder newOrder) {
         if (newOrder != null) {
             orders.add(newOrder);
+//            Order order = new Order();
+//            order.setIdOrder(UUID.randomUUID().toString());
+//            order.setTableQR(ControladorTable.getMiController().getQrTable());
+
+
+            selectedDishes.clear();
             Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
         }
     }
