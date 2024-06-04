@@ -94,8 +94,6 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             makeOrder(newOrder);
         }
 
-
-
         tvMesa = findViewById(R.id.tvMesa);
         tabLayout = findViewById(R.id.tabMenu);
         viewPager = findViewById(R.id.viewPager);
@@ -336,6 +334,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     public void makeOrder(DishOrder newOrder) {
         if (newOrder != null) {
             orders.add(newOrder);
+
 //            Order order = new Order();
 //            order.setIdOrder(UUID.randomUUID().toString());
 //            order.setTableQR(ControladorTable.getMiController().getQrTable());

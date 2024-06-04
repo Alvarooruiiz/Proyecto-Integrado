@@ -45,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:text="Add plate"/>
             <ImageView
-                android:layout_width="170dp"
-                android:layout_height="170dp"
-                />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/add_plate"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

@@ -1,27 +1,52 @@
 package com.example.proyectoalfari.Model;
 
 public class Order {
-    private Dish dish;
-    private int quantity;
 
-    public Order(Dish dish, int quantity) {
-        this.dish = dish;
-        this.quantity = quantity;
+    private String idOrder;
+    private String tableQR;
+    private String dishName;
+    private boolean isReady;
+
+    public Order() {
     }
 
-    public Dish getDish() {
-        return dish;
+    public Order(String idOrder, String tableQR, String dishName) {
+        this.idOrder = idOrder;
+        this.tableQR = tableQR;
+        this.dishName = dishName;
+        this.isReady = false;
     }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
+    public String getIdOrder() {
+        return idOrder;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setIdOrder(String idOrder) {
+        this.idOrder = idOrder;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public String getTableQR() {
+        return tableQR;
+    }
+
+    public void setTableQR(String tableQR) {
+        this.tableQR = tableQR;
+    }
+
+    public String getDishName() {
+        return dishName;
+    }
+
+    public void setDishName(String dishName) {
+        this.dishName = dishName;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 }
+

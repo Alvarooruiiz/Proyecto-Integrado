@@ -43,7 +43,7 @@
 
         </LinearLayout>
         <Button
-            android:id="@+id/btnTableOrder"
+            android:id="@+id/btnSeeOrder"
             android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

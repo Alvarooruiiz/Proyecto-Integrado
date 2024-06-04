@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoalfari.Menu.RecyclerAdapterOrderList;
 import com.example.proyectoalfari.Model.Table;
+import com.example.proyectoalfari.Order.RecyclerAdapterOrderAdmin;
 import com.example.proyectoalfari.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -54,11 +56,13 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
         }
         generateQRCode(table.getNumQR(), holder.ivQrImage);
 
-        holder.btnTableOrder.setOnClickListener(new View.OnClickListener() {
+        holder.btnSeeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(table.getStatus().equals("true")){
-                    Toast.makeText(v.getContext(), "La mesa está libre", Toast.LENGTH_SHORT).show();
+                    v = LayoutInflater.from(v.getContext()).inflate(R.layout.order_admin_layout, null);
+                    RecyclerView rvAdapterOrderAdmin = v.findViewById(R.id.rvOrderAmind);
+                    RecyclerAdapterOrderAdmin adapter = new RecyclerAdapterOrderAdmin();
                 }
             }
         });
@@ -92,14 +96,14 @@ public class RecyclerAdapterTable extends RecyclerView.Adapter<RecyclerAdapterTa
         private TextView tvTableNumber;
         private TextView tvTableStatus;
         private ImageView ivQrImage;
-        private Button btnTableOrder;
+        private Button btnSeeOrder;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cvMesa = itemView.findViewById(R.id.cvMesa);
             tvTableNumber = itemView.findViewById(R.id.tvTableNumber);
             tvTableStatus = itemView.findViewById(R.id.tvTableStatus);
             ivQrImage = itemView.findViewById(R.id.ivQrImage);
-            btnTableOrder = itemView.findViewById(R.id.btnTableOrder);
+            btnSeeOrder = itemView.findViewById(R.id.btnSeeOrder);
         }
     }
 }
