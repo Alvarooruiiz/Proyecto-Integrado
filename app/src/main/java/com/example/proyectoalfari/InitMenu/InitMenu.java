@@ -141,6 +141,9 @@ public class InitMenu extends AppCompatActivity {
                         }
                     }
                 });
+//                ControladorTable.getMiController().setQrTable("111");
+//                Intent intent = new Intent(InitMenu.this, Menu.class);
+//                startActivity(intent);
             }
         });
 

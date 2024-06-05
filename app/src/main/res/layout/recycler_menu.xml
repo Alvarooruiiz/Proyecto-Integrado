@@ -20,9 +20,12 @@
 
             <ImageView
                 android:id="@+id/ivImage"
-                android:layout_width="123dp"
-                android:layout_height="98dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
                 android:layout_gravity="center|top"
+                app:circularflow_radiusInDP="18dp"
                 android:src="@drawable/image_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -30,10 +33,12 @@
 
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="nombre plato"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivImage"
@@ -45,6 +50,7 @@
                 android:layout_width="92dp"
                 android:layout_height="34dp"
                 android:backgroundTint="#5a2e2e"
+                android:textColor="@color/white"
                 android:text="Añadir"
                 android:textSize="25px"
                 app:layout_constraintEnd_toEndOf="parent"

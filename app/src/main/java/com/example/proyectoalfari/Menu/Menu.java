@@ -176,6 +176,10 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     }
 
     private void simulatePaymentProcess() throws MessagingException, IOException {
+        if(orders.isEmpty()){
+            Toast.makeText(context, "No hay pedidos", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String filePath = context.getExternalFilesDir(null) + "/factura.pdf";
         try {
             List<Dish> allDishes = new ArrayList<>();
