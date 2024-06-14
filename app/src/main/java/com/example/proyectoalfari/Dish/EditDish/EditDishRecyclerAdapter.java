@@ -81,7 +81,7 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
 
         Glide.with(detailView.getContext()).load(dish.getImageUrl()).into(ivDishDetailImage);
         tvDishDetailName.setText(dish.getName());
-        tvDishDetailDescription.setText(dish.getAllergens());
+        tvDishDetailDescription.setText(dish.getDesc());
         tvDishDetailPrice.setText(String.valueOf(dish.getPrice()));
 
         String allergens = dish.getAllergens();
@@ -172,10 +172,6 @@ public class EditDishRecyclerAdapter extends RecyclerView.Adapter<EditDishRecycl
         String newDesc = tvDishDetailDescription2.getText().toString();
         EditText tvDishDetailPrice= v.findViewById(R.id.tvDishDetailPrice2);
         String newPrice = tvDishDetailPrice.getText().toString();
-
-
-
-
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Dish").child(dish.getId());
 

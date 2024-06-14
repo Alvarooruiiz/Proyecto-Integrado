@@ -24,7 +24,7 @@ public class SQLiteGestor {
     public long addUserLog(String username) {
         ContentValues values = new ContentValues();
         values.put(SQLiteBDContract.BDTablas.COLUMN_USERNAME, username);
-        values.put(SQLiteBDContract.BDTablas.COLUMN_DATOS, "nada");
+//        values.put(SQLiteBDContract.BDTablas.COLUMN_DATOS, "nada");
         return dbWrite.insert(SQLiteBDContract.BDTablas.TABLE_NAME, null, values);
     }
 

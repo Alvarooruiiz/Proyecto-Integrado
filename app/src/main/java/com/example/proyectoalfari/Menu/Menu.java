@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -166,6 +167,13 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             }
         });
         currentDialog.show();
+        Window window = currentDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.dimAmount = 0.7f;
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setAttributes(layoutParams);
+        }
 
         new Handler().post(new Runnable() {
             @Override
@@ -322,6 +330,13 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
         });
 
         currentBottomSheetDialog.show();
+        Window window = currentBottomSheetDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.dimAmount = 0.7f;
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setAttributes(layoutParams);
+        }
     }
 
     private void showConfirmationDialog(DishOrder newOrder, BottomSheetDialog bottomSheetDialog) {
