@@ -131,19 +131,19 @@ public class InitMenu extends AppCompatActivity {
         cvCartaDish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                qrExistOnDatabase(new QRExistCallback() {
-//                    @Override
-//                    public void onQRExist(boolean exist) {
-//                        if (exist) {
-//                            updateTableStatusAndNavigate();
-//                        } else {
-//                            Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-                ControladorTable.getMiController().setQrTable("111");
-                Intent intent = new Intent(InitMenu.this, Menu.class);
-                startActivity(intent);
+                qrExistOnDatabase(new QRExistCallback() {
+                    @Override
+                    public void onQRExist(boolean exist) {
+                        if (exist) {
+                            updateTableStatusAndNavigate();
+                        } else {
+                            Toast.makeText(v.getContext(), "Introduzca su mesa por QR", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+//                ControladorTable.getMiController().setQrTable("111");
+//                Intent intent = new Intent(InitMenu.this, Menu.class);
+//                startActivity(intent);
             }
         });
 
