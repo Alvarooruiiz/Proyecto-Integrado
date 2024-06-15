@@ -408,7 +408,6 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             }
 
             selectedDishes.clear();
-            Toast.makeText(context, "Pedido realizado", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -440,7 +439,6 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
     @Override
     public void onDishSelected(Dish dish) {
         selectedDishes.add(dish);
-        Toast.makeText(this, "Plato añadido al carrito" + selectedDishes.size(), Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("MissingSuperCall")

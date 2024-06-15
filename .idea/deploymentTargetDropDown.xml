@@ -10,23 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\alvar\.android\avd\Pixel_3a_API_34.avd" />
+                  <value value="C:\Users\alvar\.android\avd\Pixel_4_API_34_Camera.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\alvar\.android\avd\Pixel_3a_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-15T17:25:03.858605900Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-06-15T17:54:27.896576600Z" />
         </State>
       </entry>
     </value>
