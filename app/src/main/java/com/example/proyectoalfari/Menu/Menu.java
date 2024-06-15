@@ -31,7 +31,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoalfari.Controlador.ControladorTable;
 import com.example.proyectoalfari.DataBaseSQLite.SQLiteGestor;
-import com.example.proyectoalfari.GestorEmail.CrearPDF;
+import com.example.proyectoalfari.GestorEmail.CreateDocumentPDF;
 import com.example.proyectoalfari.GestorEmail.SendEmailTask;
 import com.example.proyectoalfari.InitMenu.InitMenu;
 import com.example.proyectoalfari.Model.Dish;
@@ -194,7 +194,7 @@ public class Menu extends AppCompatActivity implements RecyclerViewMenu.OnDishSe
             for (DishOrder order : orders) {
                 allDishes.addAll(order.getDishListOrder());
             }
-            CrearPDF.createInvoice(filePath, allDishes);
+            CreateDocumentPDF.createInvoice(filePath, allDishes);
             sendEmail("Factura comida en Alfari", filePath);
             Log.e("ASDASD", "Correctyo");
         } catch (FileNotFoundException e) {

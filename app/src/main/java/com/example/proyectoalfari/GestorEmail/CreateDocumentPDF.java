@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-public class CrearPDF {
+public class CreateDocumentPDF {
     public static void createInvoice(String dest, List<Dish> dishes) throws FileNotFoundException {
         PdfWriter writer = new PdfWriter(dest);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
