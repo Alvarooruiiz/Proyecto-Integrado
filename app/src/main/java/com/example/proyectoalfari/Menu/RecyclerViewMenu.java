@@ -85,7 +85,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
 
         Glide.with(detailView.getContext()).load(dish.getImageUrl()).into(ivDishDetailImage);
         tvDishDetailName.setText(dish.getName());
-        tvDishDetailDescription.setText(dish.getAllergens());
+        tvDishDetailDescription.setText(dish.getDesc());
         tvDishDetailPrice.setText(String.valueOf(dish.getPrice()));
 
         String allergens = dish.getAllergens();
