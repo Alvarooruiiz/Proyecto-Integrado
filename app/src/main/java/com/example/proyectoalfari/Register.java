@@ -132,7 +132,7 @@ public class Register extends AppCompatActivity {
         } else if (emailText.isEmpty()) {
             tilEmail.setError("El email no puede estar vacío");
             return false;
-        } else if (emailText.contains("@")){
+        } else if (!emailText.contains("@")){
             tilEmail.setError("El formato del email no es correcto (example@example.com)");
             return false;
         }else if (passText.isEmpty()) {

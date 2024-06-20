@@ -55,15 +55,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.260"
-        android:clickable="false"
-        android:focusable="false"
+
         android:layout_margin="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false" />
+           />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,11 +79,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.373"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        >
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,13 +103,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.486"
         android:hint="Introduzca la contraseña"
-        android:clickable="false"
-        android:focusable="false"
+
         android:layout_margin="10dp">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -121,13 +124,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.596"
         android:hint="Repita la contraseña"
-        android:clickable="false"
-        android:focusable="false"
+
         android:layout_margin="10dp">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiPassRep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
@@ -135,7 +139,6 @@
         android:layout_width="361dp"
         android:layout_height="41dp"
         android:editable="false"
-        android:focusable="false"
         android:hint="01/01/1999"
         android:inputType="date"
         android:textAlignment="center"
@@ -144,7 +147,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.711"
-        android:clickable="false"/>
+         />
 
     <Button
         android:id="@+id/btnEditUserSett"

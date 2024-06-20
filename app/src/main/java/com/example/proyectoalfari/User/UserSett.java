@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,10 @@ import com.example.proyectoalfari.Controlador.ControladorUser;
 import com.example.proyectoalfari.DataBase.AlfariDatabase;
 import com.example.proyectoalfari.Model.User;
 import com.example.proyectoalfari.R;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserSett extends AppCompatActivity {
     private TextInputLayout tilUserRegSett;
@@ -23,11 +28,18 @@ public class UserSett extends AppCompatActivity {
     private TextInputLayout tilPasswordRegSett;
     private TextInputLayout tilPasswordRepeatRegSett;
 
+    private com.google.android.material.textfield.TextInputEditText tiUser;
+    private com.google.android.material.textfield.TextInputEditText tiEmail;
+    private com.google.android.material.textfield.TextInputEditText tiPass;
+    private com.google.android.material.textfield.TextInputEditText tiPassRep;
+
     private EditText etDateSett;
 
     private Button btnEditUserSett;
+    private ImageView ivEditIcon;
 
     private String nameUser;
+    String idUser;
     private AlfariDatabase database;
 
 
@@ -45,18 +57,30 @@ public class UserSett extends AppCompatActivity {
         tilPasswordRepeatRegSett = findViewById(R.id.tilPasswordRepeatRegSett);
         etDateSett = findViewById(R.id.etDateSett);
 
-        btnEditUserSett = findViewById(R.id.btnEditUserSett);
+        tiUser = findViewById(R.id.tiUser);
+        tiEmail = findViewById(R.id.tiEmail);
+        tiPass = findViewById(R.id.tiPass);
+        tiPassRep = findViewById(R.id.tiPassRep);
 
+        btnEditUserSett = findViewById(R.id.btnEditUserSett);
+        ivEditIcon = findViewById(R.id.ivEditIcon);
+        
         database = new AlfariDatabase();
         database.inicializateFirebase(this);
+        idUser ="";
+        nameUser = "";
 
         loadUserDetails(userLoged);
 
-        btnEditUserSett.setOnClickListener(new View.OnClickListener() {
+
+        ivEditIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validation()){
+                    editUserOnFireBase();
 
+                }else{
+                    Toast.makeText(UserSett.this, "Ha ocurrido un  error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -72,11 +96,25 @@ public class UserSett extends AppCompatActivity {
 
         String dateText = etDateSett.getText().toString();
 
+        User updatedUser = new User(idUser, nameUser, emailText, passText, dateText);
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User").child(nameUser);
+
+        userRef.setValue(updatedUser).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Error al actualizar los datos: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
     public void loadUserDetails(User user){
+
+        idUser=user.getUid();
         tilUserRegSett.getEditText().setText(user.getUserName());
+        nameUser = user.getUserName();
         tilEmailRegSett.getEditText().setText(user.getEmail());
         tilPasswordRegSett.getEditText().setText(user.getPass());
         tilPasswordRepeatRegSett.getEditText().setText(user.getPass());
@@ -84,8 +122,6 @@ public class UserSett extends AppCompatActivity {
     }
 
     public boolean validation() {
-
-
 
         EditText etEmail = tilEmailRegSett.getEditText();
         String emailText = etEmail.getText().toString().trim();
@@ -140,6 +176,7 @@ public class UserSett extends AppCompatActivity {
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        clearFields();
                         UserSett.super.onBackPressed();
                     }
                 })

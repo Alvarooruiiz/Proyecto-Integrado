@@ -1,6 +1,7 @@
 package com.example.proyectoalfari.Menu;
 
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
 
 
     public void showDishDetail(View parentView,Dish dish) {
+        Log.e("Error","hoalsdasdasd");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(parentView.getContext());
         LayoutInflater inflater = LayoutInflater.from(parentView.getContext());

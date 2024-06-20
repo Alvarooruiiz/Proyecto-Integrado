@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fffedf">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5px"
+        android:background="@color/black"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSelectedDishList"
         android:layout_width="match_parent"
